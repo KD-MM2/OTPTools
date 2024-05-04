@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Box, Grid, Typography } from "@mui/material";
+import { AppBar, Box, Grid, styled, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import KeyIcon from "@mui/icons-material/Key";
 import LoopIcon from "@mui/icons-material/Loop";
@@ -9,11 +9,13 @@ const CustomIconButton = ({
 	ariaLabel,
 	icon,
 	onClick,
+	onDoubleClick,
 }: {
 	label: string;
 	ariaLabel: string;
 	icon: React.ReactNode;
 	onClick: (event: any) => void;
+	onDoubleClick?: (event: any) => void;
 }) => {
 	return (
 		<Box
@@ -26,6 +28,7 @@ const CustomIconButton = ({
 				padding: 1,
 			}}
 			onClick={onClick}
+			onDoubleClick={onDoubleClick}
 		>
 			{icon}
 			<Typography variant="caption" align="center">
@@ -35,43 +38,50 @@ const CustomIconButton = ({
 	);
 };
 
+const AnimatedGridItem = styled(Grid)(({ theme }) => ({
+	transition: theme.transitions.create("background-color", {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.complex,
+	}),
+}));
+
+const buttons = [
+	{
+		label: "OTP Manager",
+		ariaLabel: "otp manager",
+		path: "/",
+		icon: <KeyIcon />,
+	},
+	{
+		label: "OTP Generator",
+		ariaLabel: "otp generator",
+		path: "/otp-generator",
+		icon: <LoopIcon />,
+	},
+];
+
 export default function BottomAppBar() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { pathname } = location;
 
-	const buttons = [
-		{
-			label: "OTP Manager",
-			ariaLabel: "otp manager",
-			path: "/",
-			icon: <KeyIcon />,
-		},
-		{
-			label: "OTP Generator",
-			ariaLabel: "otp generator",
-			path: "/otp-generator",
-			icon: <LoopIcon />,
-		},
-	];
-
 	return (
 		<>
-			<AppBar position="fixed" sx={{ top: "auto", bottom: 0 }}>
+			<AppBar
+				position="fixed"
+				sx={{ top: "auto", bottom: 0, userSelect: "none" }}
+			>
 				<Grid container>
 					{buttons.map((button, index) => (
-						<Grid
+						<AnimatedGridItem
 							item
 							xs={6}
 							key={index}
-							{...(pathname === button.path
-								? {
-										sx: {
-											backgroundColor:
-												"rgb(6, 31, 56, 0.5)",
-										},
-								  }
-								: {})}
+							className={
+								pathname === button.path
+									? "bottom-bar-active"
+									: ""
+							}
 						>
 							<CustomIconButton
 								label={button.label}
@@ -81,8 +91,9 @@ export default function BottomAppBar() {
 									pathname !== button.path &&
 									navigate(button.path)
 								}
+								onDoubleClick={() => alert("Double Clicked")}
 							/>
-						</Grid>
+						</AnimatedGridItem>
 					))}
 				</Grid>
 			</AppBar>

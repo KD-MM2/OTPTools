@@ -1,6 +1,18 @@
 #root {
   max-width: 1280px;
+  min-width: 50%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+.bottom-bar-active {
+  background-color: rgb(6, 31, 56, 0.5);
+}
+
+@media (prefers-color-scheme: dark) {
+  .bottom-bar-active {
+    background-color: var(--primary-color);
+    color: var(--text-primary-color);
+  }
 }

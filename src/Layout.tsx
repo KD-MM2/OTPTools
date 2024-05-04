@@ -1,12 +1,41 @@
-import BottomAppBar from "@/components/BottomAppBar";
+import React from "react";
 import { Outlet } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useMediaQuery, CssBaseline } from "@mui/material";
+import BottomAppBar from "@/components/BottomAppBar";
 
 export default function Layout() {
+	const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+	const theme = React.useMemo(
+		() =>
+			createTheme({
+				palette: {
+					mode: prefersDarkMode ? "dark" : "light",
+				},
+			}),
+		[prefersDarkMode]
+	);
+
+	React.useEffect(() => {
+		document.body.style.setProperty(
+			"--primary-color",
+			theme.palette.primary.main
+		);
+		document.body.style.setProperty(
+			"--text-primary-color",
+			theme.palette.background.default
+		);
+	}, [theme]);
+
 	return (
 		<>
-			<Outlet />
-			<div style={{ height: "3rem" }} />
-			<BottomAppBar />
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<Outlet />
+				<div style={{ height: "3rem" }} />
+				<BottomAppBar />
+			</ThemeProvider>
 		</>
 	);
 }

@@ -36,7 +36,6 @@ export const OTPGenerator = function () {
 		const _nextOtp = calculateOTP(secret, epoch + 30);
 
 		if (_currentOtp.success) {
-			if (epochTime == 0) setEpochTime(epoch);
 			setProgress(100);
 			setEpochIteration(String(_currentOtp.epochIteration));
 			setKeyHex(String(_currentOtp.key));
@@ -73,7 +72,7 @@ export const OTPGenerator = function () {
 				}
 			);
 		} else if (qrCode !== DummyQR) setQRCode(DummyQR);
-	}, [accountName, epochTime, issuer, qrCode, secret]);
+	}, [accountName, issuer, qrCode, secret]);
 
 	React.useEffect(() => {
 		UpdateOTP();
@@ -118,6 +117,7 @@ export const OTPGenerator = function () {
 								// fontSize: "0.8em",
 							},
 						}}
+						fullWidth
 						onChange={(e) => setSecret(e.target.value)}
 					/>
 
@@ -141,6 +141,7 @@ export const OTPGenerator = function () {
 							InputProps={{
 								readOnly: true,
 							}}
+							fullWidth
 							value={currentOTP}
 						/>
 						<TextField
@@ -151,6 +152,7 @@ export const OTPGenerator = function () {
 							InputProps={{
 								readOnly: true,
 							}}
+							fullWidth
 							value={nextOTP}
 						/>
 					</Stack>
@@ -175,6 +177,7 @@ export const OTPGenerator = function () {
 						variant="outlined"
 						size="small"
 						value={accountName}
+						fullWidth
 						onChange={(e) => setAccountName(e.target.value)}
 					/>
 					<TextField
@@ -183,6 +186,7 @@ export const OTPGenerator = function () {
 						variant="outlined"
 						size="small"
 						value={issuer}
+						fullWidth
 						onChange={(e) => setIssuer(e.target.value)}
 					/>
 					<Collapse in={displayQR}>
@@ -217,6 +221,7 @@ export const OTPGenerator = function () {
 						InputProps={{
 							readOnly: true,
 						}}
+						fullWidth
 						value={keyHex}
 					/>
 					<TextField
@@ -227,6 +232,7 @@ export const OTPGenerator = function () {
 						InputProps={{
 							readOnly: true,
 						}}
+						fullWidth
 						value={epochTime}
 					/>
 					<TextField
@@ -237,6 +243,7 @@ export const OTPGenerator = function () {
 						InputProps={{
 							readOnly: true,
 						}}
+						fullWidth
 						value={epochIteration}
 					/>
 					<TextField
@@ -247,6 +254,7 @@ export const OTPGenerator = function () {
 						InputProps={{
 							readOnly: true,
 						}}
+						fullWidth
 						value={hmac}
 					/>
 				</Stack>
