@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import {
 	Button,
 	Typography,
@@ -11,49 +11,60 @@ import {
 	Collapse,
 } from "@mui/material";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import DummyQR from "@/assets/qr.svg";
-import { generateKey, calculateOTP } from "@/utils/otp";
+import {
+	base32toHex,
+	generateTOTP,
+	generateSecret,
+	getCounterFromTime,
+} from "@/utils/otp";
+import { initialState, reducer } from "@/utils/reducer";
 import QRCode from "qrcode";
+import DummyQR from "@/assets/qr.svg";
 
 export const OTPGenerator = function () {
-	const [secret, setSecret] = React.useState<string>(generateKey());
-	const [epochTime, setEpochTime] = React.useState<number>(0);
-	const [epochIteration, setEpochIteration] = React.useState<string>("");
-	const [hmac, setHmac] = React.useState<string>("");
-	const [currentOTP, setCurrentOTP] = React.useState<string | number>("");
-	const [nextOTP, setNextOTP] = React.useState<string | number>("");
-	const [keyHex, setKeyHex] = React.useState<string>("");
-	const [keyLength, setKeyLength] = React.useState<number>(160);
-	const [accountName, setAccountName] = React.useState<string>("");
-	const [issuer, setIssuer] = React.useState<string>("");
-	const [qrCode, setQRCode] = React.useState<string>(DummyQR);
-	const [progress, setProgress] = React.useState<number>(100);
-	const displayQR = accountName.length > 0;
+	const [state, dispatch] = useReducer(reducer, initialState);
+
+	const displayQR = state.accountName.length > 0;
+	const trimmedSecret = state.secret.replace(/\s/g, "");
 
 	const UpdateOTP = React.useCallback(() => {
-		const epoch = Math.round(new Date().getTime() / 1000.0);
-		const _currentOtp = calculateOTP(secret, epoch);
-		const _nextOtp = calculateOTP(secret, epoch + 30);
+		const epoch = Date.now();
+		const _previousOtp = generateTOTP({
+			key: state.secret,
+			now: epoch - 30000,
+		});
+		const _currentOtp = generateTOTP({ key: state.secret, now: epoch });
+		const _nextOtp = generateTOTP({
+			key: state.secret,
+			now: epoch + 30000,
+		});
 
-		if (_currentOtp.success) {
-			setProgress(100);
-			setEpochIteration(String(_currentOtp.epochIteration));
-			setKeyHex(String(_currentOtp.key));
-			setKeyLength(Number(_currentOtp.keyLength));
-			setHmac((_currentOtp.hmac as string[]).join("|"));
-			setCurrentOTP(String(_currentOtp.otp));
-			setNextOTP(String(_nextOtp.otp));
-		} else {
-			setCurrentOTP("ERROR");
-			setNextOTP("ERROR");
-			setKeyHex("ERROR");
-			setKeyLength(0);
-			setHmac("ERROR");
-		}
+		dispatch({ type: "setProgress", payload: 100 });
+		dispatch({
+			type: "setEpochIteration",
+			payload: getCounterFromTime({ now: epoch, timeStep: 30 })
+				.toString(16)
+				.padStart(16, "0"),
+		});
+		dispatch({ type: "setKeyHex", payload: base32toHex(trimmedSecret) });
+		dispatch({
+			type: "setKeyLength",
+			payload: base32toHex(trimmedSecret).length * 4,
+		});
+		dispatch({
+			type: "setHmac",
+			payload: (_currentOtp.hmac as string[]).join("|"),
+		});
+		dispatch({
+			type: "setPreviousOTP",
+			payload: String(_previousOtp.code),
+		});
+		dispatch({ type: "setCurrentOTP", payload: String(_currentOtp.code) });
+		dispatch({ type: "setNextOTP", payload: String(_nextOtp.code) });
 
-		if (accountName.length > 0) {
+		if (state.accountName.length > 0) {
 			QRCode.toDataURL(
-				`otpauth://totp/${accountName}?secret=${secret}&issuer=${issuer}`,
+				`otpauth://totp/${state.accountName}?secret=${trimmedSecret}&issuer=${state.issuer}`,
 				{
 					errorCorrectionLevel: "H",
 					type: "image/jpeg",
@@ -68,11 +79,18 @@ export const OTPGenerator = function () {
 					if (err) {
 						console.error(err);
 					}
-					setQRCode(url);
+					dispatch({ type: "setQRCode", payload: url });
 				}
 			);
-		} else if (qrCode !== DummyQR) setQRCode(DummyQR);
-	}, [accountName, issuer, qrCode, secret]);
+		} else if (state.qrCode !== DummyQR)
+			dispatch({ type: "setQRCode", payload: DummyQR });
+	}, [
+		state.accountName,
+		state.issuer,
+		state.qrCode,
+		state.secret,
+		trimmedSecret,
+	]);
 
 	React.useEffect(() => {
 		UpdateOTP();
@@ -81,21 +99,14 @@ export const OTPGenerator = function () {
 	React.useEffect(() => {
 		const timer = setInterval(() => {
 			const epoch = Math.round(new Date().getTime() / 1000.0);
-			setEpochTime(epoch);
-
+			dispatch({ type: "setEpochTime", payload: epoch });
 			if (epoch % 30 == 0) UpdateOTP();
-
-			setProgress((oldProgress) => {
-				if (oldProgress <= 0) {
-					return 100;
-				}
-				return Math.max(oldProgress - 100 / 30, 0);
-			});
+			dispatch({ type: "decrementProgress" });
 		}, 1000);
 		return () => {
 			clearInterval(timer);
 		};
-	}, [UpdateOTP, secret]);
+	}, [UpdateOTP]);
 
 	return (
 		<>
@@ -110,7 +121,7 @@ export const OTPGenerator = function () {
 						label="Secret / Seed"
 						variant="outlined"
 						size="small"
-						value={secret}
+						value={state.secret}
 						inputProps={{
 							style: {
 								fontFamily: "monospace",
@@ -118,14 +129,24 @@ export const OTPGenerator = function () {
 							},
 						}}
 						fullWidth
-						onChange={(e) => setSecret(e.target.value)}
+						onChange={(e) =>
+							dispatch({
+								type: "setSecret",
+								payload: e.target.value,
+							})
+						}
 					/>
 
 					<Button
 						variant="contained"
 						size="small"
 						startIcon={<VpnKeyIcon />}
-						onClick={() => setSecret(generateKey())}
+						onClick={() =>
+							dispatch({
+								type: "setSecret",
+								payload: generateSecret(),
+							})
+						}
 					>
 						Generate
 					</Button>
@@ -133,6 +154,17 @@ export const OTPGenerator = function () {
 					<div style={{ height: "0.5em" }} />
 					<Divider>RESULT</Divider>
 					<Stack direction="row" spacing={1}>
+						<TextField
+							id="previous-otp"
+							label="Previous OTP"
+							variant="outlined"
+							size="small"
+							InputProps={{
+								readOnly: true,
+							}}
+							fullWidth
+							value={state.previousOTP}
+						/>
 						<TextField
 							id="current-otp"
 							label="Current OTP"
@@ -142,7 +174,7 @@ export const OTPGenerator = function () {
 								readOnly: true,
 							}}
 							fullWidth
-							value={currentOTP}
+							value={state.currentOTP}
 						/>
 						<TextField
 							id="Next OTP"
@@ -153,16 +185,16 @@ export const OTPGenerator = function () {
 								readOnly: true,
 							}}
 							fullWidth
-							value={nextOTP}
+							value={state.nextOTP}
 						/>
 					</Stack>
 					<LinearProgress
 						variant="determinate"
-						value={progress}
+						value={state.progress}
 						color={
-							progress <= 15
+							state.progress <= 15
 								? "error"
-								: progress <= 40
+								: state.progress <= 40
 									? "warning"
 									: "success"
 						}
@@ -176,18 +208,28 @@ export const OTPGenerator = function () {
 						label="Account Name"
 						variant="outlined"
 						size="small"
-						value={accountName}
+						value={state.accountName}
 						fullWidth
-						onChange={(e) => setAccountName(e.target.value)}
+						onChange={(e) =>
+							dispatch({
+								type: "setAccountName",
+								payload: e.target.value,
+							})
+						}
 					/>
 					<TextField
 						id="issuer"
 						label="Issuer (optional)"
 						variant="outlined"
 						size="small"
-						value={issuer}
+						value={state.issuer}
 						fullWidth
-						onChange={(e) => setIssuer(e.target.value)}
+						onChange={(e) =>
+							dispatch({
+								type: "setIssuer",
+								payload: e.target.value,
+							})
+						}
 					/>
 					<Collapse in={displayQR}>
 						<Box
@@ -201,7 +243,7 @@ export const OTPGenerator = function () {
 								id="qr-code"
 								alt="QRCode"
 								component="img"
-								src={qrCode}
+								src={state.qrCode}
 								sx={{
 									width: "256px",
 									height: "256px",
@@ -215,14 +257,14 @@ export const OTPGenerator = function () {
 					<Divider>ADVANCED</Divider>
 					<TextField
 						id="secret-key-length"
-						label={`Secret Hex (${keyLength} bits)`}
+						label={`Secret Hex (${state.keyLength} bits)`}
 						variant="outlined"
 						size="small"
 						InputProps={{
 							readOnly: true,
 						}}
 						fullWidth
-						value={keyHex}
+						value={state.keyHex}
 					/>
 					<TextField
 						id="epoch-time"
@@ -233,7 +275,7 @@ export const OTPGenerator = function () {
 							readOnly: true,
 						}}
 						fullWidth
-						value={epochTime}
+						value={state.epochTime}
 					/>
 					<TextField
 						id="epoch-iteration"
@@ -244,7 +286,7 @@ export const OTPGenerator = function () {
 							readOnly: true,
 						}}
 						fullWidth
-						value={epochIteration}
+						value={state.epochIteration}
 					/>
 					<TextField
 						id="hmac"
@@ -255,7 +297,7 @@ export const OTPGenerator = function () {
 							readOnly: true,
 						}}
 						fullWidth
-						value={hmac}
+						value={state.hmac}
 					/>
 				</Stack>
 			</Box>

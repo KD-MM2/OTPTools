@@ -26,6 +26,14 @@ export default function Layout() {
 			"--text-primary-color",
 			theme.palette.background.default
 		);
+		document.body.style.setProperty(
+			"--action-disabled-color",
+			theme.palette.action.disabledBackground
+		);
+		document.body.style.setProperty(
+			"--action-disabled-selected-color",
+			theme.palette.action.disabled
+		);
 	}, [theme]);
 
 	return (

@@ -1,6 +1,7 @@
 #root {
   max-width: 1280px;
   min-width: 50%;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -10,9 +11,31 @@
   background-color: rgb(6, 31, 56, 0.5);
 }
 
+.speed-dial {
+  .MuiFab-circular {
+    background-color: var(--text-primary-color);
+  }
+
+  .MuiFab-circular:hover {
+    background-color:
+      var(--action-disabled-selected-color);
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .bottom-bar-active {
     background-color: var(--primary-color);
     color: var(--text-primary-color);
+  }
+
+  .speed-dial {
+    .MuiFab-circular {
+      background-color: var(--action-disabled-color);
+    }
+
+    .MuiFab-circular:hover {
+      background-color:
+        var(--action-disabled-selected-color);
+    }
   }
 }
