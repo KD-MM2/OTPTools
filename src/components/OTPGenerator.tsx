@@ -28,15 +28,15 @@ export const OTPGenerator = function () {
 	const trimmedSecret = state.secret.replace(/\s/g, "");
 
 	const UpdateOTP = React.useCallback(() => {
-		const epoch = Date.now();
+		const epoch = Math.round(Date.now() / 1000.0);
 		const _previousOtp = generateTOTP({
 			key: state.secret,
-			now: epoch - 30000,
+			now: epoch - 30,
 		});
 		const _currentOtp = generateTOTP({ key: state.secret, now: epoch });
 		const _nextOtp = generateTOTP({
 			key: state.secret,
-			now: epoch + 30000,
+			now: epoch + 30,
 		});
 
 		dispatch({ type: "setProgress", payload: 100 });
@@ -98,7 +98,7 @@ export const OTPGenerator = function () {
 
 	React.useEffect(() => {
 		const timer = setInterval(() => {
-			const epoch = Math.round(new Date().getTime() / 1000.0);
+			const epoch = Math.round(Date.now() / 1000.0);
 			dispatch({ type: "setEpochTime", payload: epoch });
 			if (epoch % 30 == 0) UpdateOTP();
 			dispatch({ type: "decrementProgress" });

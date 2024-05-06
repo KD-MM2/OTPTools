@@ -1,4 +1,3 @@
-import React, { useReducer } from "react";
 import { generateSecret } from "@/utils/otp";
 import DummyQR from "@/assets/qr.svg";
 

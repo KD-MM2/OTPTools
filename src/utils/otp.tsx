@@ -89,23 +89,22 @@ function getCounterFromTime({
 	now: number;
 	timeStep: number;
 }) {
-	return Math.floor(now / 1000 / timeStep);
+	return Math.floor(Math.round(now / 1000) / timeStep);
 }
 
 function generateTOTP({
 	key,
-	now = Date.now(),
+	now = Math.round(Date.now() / 1000.0),
 	timeStep = 30,
 }: {
 	key: string;
 	now?: number;
 	timeStep?: number;
 }) {
-	const counter = getCounterFromTime({ now, timeStep });
 
 	return generateHOTP({
 		key: key.replace(/\s/g, "").toUpperCase(),
-		counter: counter,
+		counter: Math.floor(now / timeStep),
 	});
 }
 
