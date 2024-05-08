@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useMediaQuery, CssBaseline } from "@mui/material";
-import BottomAppBar from "@/components/BottomAppBar";
+import BottomAppBar from "@/components/BottomBar/BottomBar";
 
 export default function Layout() {
 	const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -38,12 +38,14 @@ export default function Layout() {
 
 	return (
 		<>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<Outlet />
-				<div style={{ height: "3rem" }} />
-				<BottomAppBar />
-			</ThemeProvider>
+			<React.StrictMode>
+				<ThemeProvider theme={theme}>
+					<CssBaseline />
+					<Outlet />
+					<div style={{ height: "3rem" }} />
+					<BottomAppBar />
+				</ThemeProvider>
+			</React.StrictMode>
 		</>
 	);
 }

@@ -4,7 +4,6 @@ import {
 	Typography,
 	Divider,
 	Stack,
-	TextField,
 	Box,
 	LinearProgress,
 	Paper,
@@ -20,8 +19,9 @@ import {
 import { initialState, reducer } from "@/utils/reducer";
 import QRCode from "qrcode";
 import DummyQR from "@/assets/qr.svg";
+import CustomTextField from "@/components/OTPGenerator/CustomTextField";
 
-export const OTPGenerator = function () {
+const OTPGenerator = function () {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const displayQR = state.accountName.length > 0;
@@ -116,19 +116,11 @@ export const OTPGenerator = function () {
 				</Typography>
 				<Stack direction="column" spacing={2} sx={{ pt: 1 }}>
 					<Divider>BASIC</Divider>
-					<TextField
+					<CustomTextField
 						id="secret-seed"
 						label="Secret / Seed"
-						variant="outlined"
-						size="small"
 						value={state.secret}
-						inputProps={{
-							style: {
-								fontFamily: "monospace",
-								// fontSize: "0.8em",
-							},
-						}}
-						fullWidth
+						ro={false}
 						onChange={(e) =>
 							dispatch({
 								type: "setSecret",
@@ -154,37 +146,22 @@ export const OTPGenerator = function () {
 					<div style={{ height: "0.5em" }} />
 					<Divider>RESULT</Divider>
 					<Stack direction="row" spacing={1}>
-						<TextField
+						<CustomTextField
 							id="previous-otp"
 							label="Previous OTP"
-							variant="outlined"
-							size="small"
-							InputProps={{
-								readOnly: true,
-							}}
-							fullWidth
+							ro={true}
 							value={state.previousOTP}
 						/>
-						<TextField
+						<CustomTextField
 							id="current-otp"
 							label="Current OTP"
-							variant="outlined"
-							size="small"
-							InputProps={{
-								readOnly: true,
-							}}
-							fullWidth
+							ro={true}
 							value={state.currentOTP}
 						/>
-						<TextField
+						<CustomTextField
 							id="Next OTP"
 							label="Next OTP"
-							variant="outlined"
-							size="small"
-							InputProps={{
-								readOnly: true,
-							}}
-							fullWidth
+							ro={true}
 							value={state.nextOTP}
 						/>
 					</Stack>
@@ -203,13 +180,11 @@ export const OTPGenerator = function () {
 
 					<div style={{ height: "0.5em" }} />
 					<Divider>QR CODE</Divider>
-					<TextField
+					<CustomTextField
 						id="account-name"
 						label="Account Name"
-						variant="outlined"
-						size="small"
 						value={state.accountName}
-						fullWidth
+						ro={false}
 						onChange={(e) =>
 							dispatch({
 								type: "setAccountName",
@@ -217,13 +192,11 @@ export const OTPGenerator = function () {
 							})
 						}
 					/>
-					<TextField
+					<CustomTextField
 						id="issuer"
 						label="Issuer (optional)"
-						variant="outlined"
-						size="small"
 						value={state.issuer}
-						fullWidth
+						ro={false}
 						onChange={(e) =>
 							dispatch({
 								type: "setIssuer",
@@ -255,48 +228,28 @@ export const OTPGenerator = function () {
 
 					<div style={{ height: "0.5em" }} />
 					<Divider>ADVANCED</Divider>
-					<TextField
+					<CustomTextField
 						id="secret-key-length"
 						label={`Secret Hex (${state.keyLength} bits)`}
-						variant="outlined"
-						size="small"
-						InputProps={{
-							readOnly: true,
-						}}
-						fullWidth
+						ro={true}
 						value={state.keyHex}
 					/>
-					<TextField
+					<CustomTextField
 						id="epoch-time"
 						label="Epoch time"
-						variant="outlined"
-						size="small"
-						InputProps={{
-							readOnly: true,
-						}}
-						fullWidth
+						ro={true}
 						value={state.epochTime}
 					/>
-					<TextField
+					<CustomTextField
 						id="epoch-iteration"
 						label="Epoch iteration"
-						variant="outlined"
-						size="small"
-						InputProps={{
-							readOnly: true,
-						}}
-						fullWidth
+						ro={true}
 						value={state.epochIteration}
 					/>
-					<TextField
+					<CustomTextField
 						id="hmac"
 						label="HMAC"
-						variant="outlined"
-						size="small"
-						InputProps={{
-							readOnly: true,
-						}}
-						fullWidth
+						ro={true}
 						value={state.hmac}
 					/>
 				</Stack>
@@ -304,3 +257,5 @@ export const OTPGenerator = function () {
 		</>
 	);
 };
+
+export default OTPGenerator;
