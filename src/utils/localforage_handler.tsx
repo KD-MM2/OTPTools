@@ -1,34 +1,39 @@
 import localForage from "localforage";
-import { decryptKey, encryptKey, generateKey } from "./aes";
+import {
+	generateKey,
+	encryptKey,
+	decryptKey,
+	encryptData,
+	decryptData,
+} from "@/utils/aes";
 
-export { initKey, getKey };
+export { getSeeds, setSeeds };
 
 localForage.config({
 	driver: localForage.INDEXEDDB,
 	name: "otp-manager",
-	version: 1.0,
 	storeName: "otps",
+	version: 1.0,
 });
 
-function initKey() {
-	const newKey = generateKey();
-	const encryptedKey = encryptKey(newKey);
-	localForage.setItem("key", encryptedKey).then(() => {
-		console.log("Saved key to local storage");
-		return newKey;
-	});
-	return null;
+async function getKey() {
+	let data = await localForage.getItem("key");
+	if (!data) {
+		data = encryptKey(generateKey());
+		await localForage.setItem("key", data);
+	}
+	return decryptKey(data as string).toString();
 }
 
-function getKey() {
-	localForage.getItem("key").then((value) => {
-		if (!value) {
-			initKey();
-			return null;
-		}
-		const decryptedKey = decryptKey(value as string);
-		console.log("decryptedKey", decryptedKey, decryptedKey.toString());
-		return decryptedKey;
-	});
-	return null;
+async function getSeeds() {
+	const data = await localForage.getItem("seeds");
+	if (!data) {
+		return "[]";
+	}
+	return decryptData(data as string, await getKey());
+}
+
+async function setSeeds(seeds: OTPData[]) {
+	const data = encryptData(JSON.stringify(seeds), await getKey());
+	return localForage.setItem("seeds", data);
 }

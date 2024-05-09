@@ -1,19 +1,6 @@
-import * as CryptoJS from "crypto-js";
-import { mixCharacters, unmixCharacters } from "./string_mixer";
+import CryptoJS from "crypto-js";
 
-export { generateRandomKey, generateKey, encryptKey, decryptKey };
-
-function generateRandomKey(len: number = 24) {
-	const key = generateKey(len);
-	const encryptedKey = encryptKey(key);
-	const decryptedKey = decryptKey(encryptedKey);
-
-	console.log("Original key: ", key.toString());
-	console.log("Encrypted key: ", encryptedKey);
-	console.log("Decrypted key: ", decryptedKey.toString());
-
-	return key;
-}
+export { generateKey, encryptKey, decryptKey, encryptData, decryptData };
 
 function generateKey(len: number = 24) {
 	return CryptoJS.lib.WordArray.random(len);
@@ -25,4 +12,12 @@ function encryptKey(key: CryptoJS.lib.WordArray) {
 
 function decryptKey(encryptedKey: string) {
 	return CryptoJS.enc.Base64.parse(encryptedKey);
+}
+
+function encryptData(data: string, key: string) {
+	return CryptoJS.AES.encrypt(data, key).toString();
+}
+
+function decryptData(data: string, key: string) {
+	return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
 }
