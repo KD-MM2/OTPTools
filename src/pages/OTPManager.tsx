@@ -3,32 +3,17 @@ import { useCallback, useEffect, useState } from "react";
 import { generateTOTP } from "@/utils/otp";
 import OTPItem from "@/components/OTPManager/OTPItem/OTPItem";
 import SpeedDial from "@/components/OTPManager/SpeedDial/SpeedDial";
-import localForage from "localforage";
 import { getSeeds, setSeeds } from "@/utils/localforage_handler";
-
-const OTPs: OTPData[] = [
-	{
-		user: "user1",
-		issuer: "issuer1",
-		secret: "SZWEFCVNWUJFM73B",
-	},
-];
-
-localForage.config({
-	driver: localForage.INDEXEDDB,
-	name: "otp-manager",
-	version: 1.0,
-	storeName: "otps",
-});
 
 const OTPManager = function () {
 	const [open, setOpen] = useState(false);
-	const [otps, setOtps] = useState<OTPData[]>(OTPs);
+	const [seeds, setSeeds] = useState<OTPData[]>([]);
+	const [otps, setOtps] = useState<OTPData[]>([]);
 	const [progress, setProgress] = useState<number>(100);
 
 	const UpdateOTP = useCallback(() => {
 		setOtps(
-			OTPs.map((otp) => {
+			seeds.map((otp) => {
 				const newOTP = generateTOTP({
 					key: otp.secret,
 					now: Math.round(Date.now() / 1000.0),
@@ -37,7 +22,7 @@ const OTPManager = function () {
 			})
 		);
 		setProgress(100);
-	}, []);
+	}, [seeds]);
 
 	useEffect(() => {
 		UpdateOTP();
@@ -50,6 +35,7 @@ const OTPManager = function () {
 
 		getSeeds().then((seeds) => {
 			console.log("seeds =>", seeds, typeof seeds);
+			setSeeds(seeds.trim() === "" ? [] : JSON.parse(seeds));
 		});
 	}, []);
 
@@ -83,7 +69,6 @@ const OTPManager = function () {
 					))}
 				</Stack>
 			</Box>
-
 			<SpeedDial open={open} setOpen={setOpen} progress={progress} />
 		</>
 	);

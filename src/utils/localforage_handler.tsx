@@ -17,20 +17,20 @@ localForage.config({
 });
 
 async function getKey() {
-	let data = await localForage.getItem("key");
+	const data = await localForage.getItem("key");
 	if (!data) {
-		data = encryptKey(generateKey());
-		await localForage.setItem("key", data);
+		await localForage.setItem("key", encryptKey(generateKey()));
 	}
 	return decryptKey(data as string).toString();
 }
 
 async function getSeeds() {
+	const key = await getKey();
 	const data = await localForage.getItem("seeds");
 	if (!data) {
 		return "[]";
 	}
-	return decryptData(data as string, await getKey());
+	return decryptData(data as string, key);
 }
 
 async function setSeeds(seeds: OTPData[]) {
