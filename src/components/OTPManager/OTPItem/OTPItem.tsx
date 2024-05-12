@@ -1,10 +1,8 @@
-import {
-	Paper,
-	Typography,
-	Grid,
-	useMediaQuery,
-	useTheme,
-} from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material";
 import { useRef } from "react";
 import GridItem from "@/components/OTPManager/OTPItem/GridItem";
 

@@ -1,19 +1,23 @@
-import { Box, Typography, Stack, Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
 import { useCallback, useEffect, useState } from "react";
 import { generateTOTP } from "@/utils/otp";
 import OTPItem from "@/components/OTPManager/OTPItem/OTPItem";
 import SpeedDial from "@/components/OTPManager/SpeedDial/SpeedDial";
 import { getSeeds, setSeeds } from "@/utils/localforage_handler";
+import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
 
 const OTPManager = function () {
 	const [open, setOpen] = useState(false);
-	const [seeds, setSeeds] = useState<OTPData[]>([]);
+	const [orgOtps, setOrgOtps] = useState<OTPData[]>([]);
 	const [otps, setOtps] = useState<OTPData[]>([]);
 	const [progress, setProgress] = useState<number>(100);
 
 	const UpdateOTP = useCallback(() => {
 		setOtps(
-			seeds.map((otp) => {
+			orgOtps.map((otp) => {
 				const newOTP = generateTOTP({
 					key: otp.secret,
 					now: Math.round(Date.now() / 1000.0),
@@ -22,21 +26,14 @@ const OTPManager = function () {
 			})
 		);
 		setProgress(100);
-	}, [seeds]);
+	}, [orgOtps]);
+
+	useEffect(() => UpdateOTP(), [UpdateOTP]);
 
 	useEffect(() => {
-		UpdateOTP();
-	}, [UpdateOTP]);
-
-	useEffect(() => {
-		// setSeeds(OTPs).then(() => {
-		// 	console.log("useEffect Saved seeds to local storage");
-		// });
-
-		getSeeds().then((seeds) => {
-			console.log("seeds =>", seeds, typeof seeds);
-			setSeeds(seeds.trim() === "" ? [] : JSON.parse(seeds));
-		});
+		getSeeds().then((seeds) =>
+			setOrgOtps(seeds.trim() === "" ? [] : JSON.parse(seeds))
+		);
 	}, []);
 
 	useEffect(() => {
@@ -53,6 +50,31 @@ const OTPManager = function () {
 			clearInterval(timer);
 		};
 	}, [UpdateOTP]);
+
+	const handleAddNewOTP = useCallback(
+		(data: OTPData[]) => {
+			const joined = [...orgOtps, ...data];
+			setOrgOtps(joined);
+			setSeeds(joined).then(() =>
+				emitCustomEvent("Operations", {
+					type: "NEW_OTP_RESULT",
+					data: "ADDED",
+				})
+			);
+		},
+		[orgOtps]
+	);
+
+	useCustomEventListener(
+		"Operations",
+		(data: { type: string; data: OTPData[] }) => {
+			switch (data.type) {
+				case "ADD_NEW_OTP":
+					handleAddNewOTP(data.data);
+					break;
+			}
+		}
+	);
 
 	return (
 		<>

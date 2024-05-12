@@ -1,14 +1,12 @@
 import React, { useReducer } from "react";
-import {
-	Button,
-	Typography,
-	Divider,
-	Stack,
-	Box,
-	LinearProgress,
-	Paper,
-	Collapse,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import LinearProgress from "@mui/material/LinearProgress";
+import Collapse from "@mui/material/Collapse";
+import Paper from "@mui/material/Paper";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import {
 	base32toHex,

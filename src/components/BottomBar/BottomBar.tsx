@@ -1,4 +1,5 @@
-import { AppBar, Grid } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Grid from "@mui/material/Grid";
 import { useNavigate, useLocation } from "react-router-dom";
 import AnimatedGridItem from "@/components/BottomBar/AnimatedGridItem";
 import IconButtonWithText from "@/components/BottomBar/IconButtonWithText";

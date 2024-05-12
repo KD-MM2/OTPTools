@@ -6,12 +6,14 @@ const CustomTextField = ({
 	value,
 	ro,
 	onChange,
+	required,
 }: {
 	id: string;
 	label: string;
 	value: string | number;
 	ro?: boolean;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	required?: boolean;
 }) => (
 	<TextField
 		id={id}
@@ -25,6 +27,7 @@ const CustomTextField = ({
 			},
 			readOnly: ro,
 		}}
+		required={required}
 		fullWidth
 		onChange={onChange}
 	/>
