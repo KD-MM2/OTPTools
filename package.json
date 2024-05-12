@@ -12,13 +12,14 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^6.0.0-alpha.5",
-    "@mui/material": "^6.0.0-alpha.5",
+    "@mui/icons-material": "^5.15.17",
+    "@mui/material": "^5.15.17",
     "@types/node": "^20.12.8",
     "crypto-js": "^4.2.0",
     "localforage": "^1.10.0",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",
+    "react-custom-events": "^1.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0"
   },

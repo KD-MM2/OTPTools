@@ -1,4 +1,4 @@
-import * as CryptoJS from "crypto-js";
+import CryptoJS from "crypto-js";
 
 export {
 	generateHOTP,
@@ -11,7 +11,7 @@ export {
 	getCounterFromTime,
 };
 
-function hexToBytes(hex: string) {
+function hexToBytes(hex: string) {                             
 	return (hex.match(/.{1,2}/g) ?? []).map((char) =>
 		Number.parseInt(char, 16)
 	);
