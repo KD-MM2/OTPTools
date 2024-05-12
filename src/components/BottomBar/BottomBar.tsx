@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import AnimatedGridItem from "@/components/BottomBar/AnimatedGridItem";
 import IconButtonWithText from "@/components/BottomBar/IconButtonWithText";
 import BottomBarButtons from "@/components/BottomBar/BottomBarButtons";
+import SnackBar from "@/components/BottomBar/SnackBar";
 
 export default function BottomAppBar() {
 	const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function BottomAppBar() {
 				position="fixed"
 				sx={{ top: "auto", bottom: 0, userSelect: "none" }}
 			>
+				<SnackBar />
 				<Grid container>
 					{BottomBarButtons.map((button, index) => (
 						<AnimatedGridItem

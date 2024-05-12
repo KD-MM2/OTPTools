@@ -8,6 +8,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Collapse from "@mui/material/Collapse";
 import Paper from "@mui/material/Paper";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
 import {
 	base32toHex,
 	generateTOTP,
@@ -18,6 +19,8 @@ import { initialState, reducer } from "@/utils/reducer";
 import QRCode from "qrcode";
 import DummyQR from "@/assets/qr.svg";
 import CustomTextField from "@/components/OTPGenerator/CustomTextField";
+import { emitCustomEvent } from "react-custom-events";
+import { getSeeds, setSeeds } from "@/utils/localforage_handler";
 
 const OTPGenerator = function () {
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -106,6 +109,34 @@ const OTPGenerator = function () {
 		};
 	}, [UpdateOTP]);
 
+	const handleAddToOTPList = () => {
+		if (state.accountName.length === 0) {
+			emitCustomEvent("SnackBarEvent", {
+				type: "SHOW_SNACKBAR",
+				message: "Please fill Account Name field!",
+				severity: "error",
+			});
+			return;
+		}
+
+		getSeeds().then((seeds) =>
+			setSeeds([
+				...JSON.parse(seeds),
+				{
+					user: state.accountName,
+					issuer: state.issuer,
+					secret: state.secret.replace(/\s/g, ""),
+				},
+			]).then(() =>
+				emitCustomEvent("SnackBarEvent", {
+					type: "SHOW_SNACKBAR",
+					message: "Added new OTP to OTP List!",
+					severity: "success",
+				})
+			)
+		);
+	};
+
 	return (
 		<>
 			<Box>
@@ -139,6 +170,14 @@ const OTPGenerator = function () {
 						}
 					>
 						Generate
+					</Button>
+					<Button
+						variant="contained"
+						size="small"
+						startIcon={<EnhancedEncryptionIcon />}
+						onClick={() => handleAddToOTPList()}
+					>
+						Add to OTP Manager
 					</Button>
 
 					<div style={{ height: "0.5em" }} />

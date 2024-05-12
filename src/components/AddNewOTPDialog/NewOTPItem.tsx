@@ -46,8 +46,8 @@ export default function NewOTPItem({
 				)}
 				<CustomTextField
 					required
-					id={`new-otp-username-${index}`}
-					label="Username"
+					id={`new-otp-account-name-${index}`}
+					label="Account Name"
 					value={otp.user}
 					onChange={(e) => handleFieldChange("user", e.target.value)}
 				/>
