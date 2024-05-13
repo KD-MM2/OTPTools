@@ -2,13 +2,21 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { useRef } from "react";
 import GridItem from "@/components/OTPManager/OTPItem/GridItem";
+import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
+import useTouchRipple from "@mui/material/useTouchRipple";
 
 const OTPItem = ({ otp }: { otp: OTPData }) => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+	const rippleRef = useRef(null);
+	const { getRippleHandlers } = useTouchRipple({
+		disabled: false,
+		focusVisible: false,
+		rippleRef,
+	});
 
 	const accountElmRef = useRef<HTMLDivElement>(null);
 	const issuerElmRef = useRef<HTMLDivElement>(null);
@@ -20,9 +28,17 @@ const OTPItem = ({ otp }: { otp: OTPData }) => {
 		(issuerElmRef.current?.offsetWidth ?? 0);
 
 	return (
-		<Paper>
+		<Paper
+			component={Box}
+			sx={{ position: "relative" }}
+			{...getRippleHandlers()}
+		>
+			<TouchRipple ref={rippleRef} center={false} />
 			<Grid container sx={{ justifyContent: "space-between" }}>
-				<GridItem {...(isMobile && { is_mobile: isMobile.toString() })}>
+				<GridItem
+					{...(isMobile && { is_mobile: isMobile.toString() })}
+					flexGrow={2}
+				>
 					<Typography
 						ref={accountElmRef}
 						fontFamily="monospace"
@@ -48,7 +64,10 @@ const OTPItem = ({ otp }: { otp: OTPData }) => {
 						{otp.issuer}
 					</Typography>
 				</GridItem>
-				<GridItem {...(isMobile && { is_mobile: isMobile.toString() })}>
+				<GridItem
+					{...(isMobile && { is_mobile: isMobile.toString() })}
+					flexGrow={1}
+				>
 					<Typography
 						fontFamily="monospace"
 						variant={isMobile ? "h5" : "h4"}
