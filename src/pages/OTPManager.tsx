@@ -76,6 +76,15 @@ const OTPManager = function () {
 		}
 	);
 
+	const copyToClipboard = async (text: string) => {
+		await navigator.clipboard.writeText(text);
+		emitCustomEvent("SnackBarEvent", {
+			type: "SHOW_SNACKBAR",
+			message: "Copied to clipboard!",
+			severity: "info",
+		});
+	};
+
 	return (
 		<>
 			<Box>
@@ -86,7 +95,13 @@ const OTPManager = function () {
 				<Stack direction="column" spacing={2} sx={{ pt: 1 }}>
 					{otps.map((otp, index) => (
 						<div key={index}>
-							<OTPItem otp={otp} />
+							<OTPItem
+								otp={otp}
+								onClick={() => {
+									console.log("Clicked");
+									copyToClipboard(otp.otp ?? "");
+								}}
+							/>
 						</div>
 					))}
 				</Stack>

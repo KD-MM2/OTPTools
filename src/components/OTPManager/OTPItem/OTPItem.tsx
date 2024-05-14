@@ -8,7 +8,7 @@ import GridItem from "@/components/OTPManager/OTPItem/GridItem";
 import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import useTouchRipple from "@mui/material/useTouchRipple";
 
-const OTPItem = ({ otp }: { otp: OTPData }) => {
+const OTPItem = ({ otp, onClick }: { otp: OTPData; onClick: any }) => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 	const rippleRef = useRef(null);
@@ -32,6 +32,7 @@ const OTPItem = ({ otp }: { otp: OTPData }) => {
 			component={Box}
 			sx={{ position: "relative" }}
 			{...getRippleHandlers()}
+			onClick={onClick}
 		>
 			<TouchRipple ref={rippleRef} center={false} />
 			<Grid container sx={{ justifyContent: "space-between" }}>
