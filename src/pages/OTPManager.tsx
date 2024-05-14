@@ -97,10 +97,7 @@ const OTPManager = function () {
 						<div key={index}>
 							<OTPItem
 								otp={otp}
-								onClick={() => {
-									console.log("Clicked");
-									copyToClipboard(otp.otp ?? "");
-								}}
+								onClick={() => copyToClipboard(otp.otp ?? "")}
 							/>
 						</div>
 					))}
