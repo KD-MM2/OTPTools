@@ -77,7 +77,7 @@ function SortableList<T extends BaseItem>({
 						display: "flex",
 						flexDirection: "column",
 						gap: "10px",
-						width: "80%",
+						width: "95%",
 					}}
 					role="application"
 				>

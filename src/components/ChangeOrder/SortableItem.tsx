@@ -76,6 +76,8 @@ function DragHandle() {
 			{...listeners}
 			ref={ref}
 			disableRipple
+			disableFocusRipple
+			disableTouchRipple
 		>
 			<DragIndicatorIcon />
 		</Button>

@@ -24,7 +24,7 @@ export default function NewOTPItem({
 		<Paper
 			id={`new-otp-item-paper-${index}`}
 			component={Box}
-			width="90%"
+			width="95%"
 			elevation={5}
 		>
 			<Stack

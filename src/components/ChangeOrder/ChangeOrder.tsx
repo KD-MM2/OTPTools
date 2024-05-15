@@ -130,6 +130,8 @@ const ChangeOrder = () => {
 						renderItem={(item) => (
 							<SortableList.Item id={item.id} key={item.id}>
 								{item.user}
+								<br />
+								{item.issuer}
 								<SortableList.DragHandle />
 							</SortableList.Item>
 						)}
