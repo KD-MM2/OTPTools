@@ -8,6 +8,8 @@ const CustomTextField = ({
 	ro,
 	onChange,
 	required,
+	pointer,
+	props,
 }: {
 	id: string;
 	label: string;
@@ -15,6 +17,8 @@ const CustomTextField = ({
 	ro?: boolean;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	required?: boolean;
+	pointer?: boolean;
+	props?: any;
 }) => (
 	<TextField
 		id={id}
@@ -25,12 +29,14 @@ const CustomTextField = ({
 		inputProps={{
 			style: {
 				fontFamily: "monospace",
+				cursor: pointer ? "pointer" : "default",
 			},
 			readOnly: ro,
 		}}
 		required={required}
 		fullWidth
 		onChange={onChange}
+		{...props}
 	/>
 );
 

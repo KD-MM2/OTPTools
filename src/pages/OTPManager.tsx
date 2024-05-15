@@ -8,6 +8,7 @@ import { generateTOTP } from "@/utils/otp";
 import { getSeeds, setSeeds } from "@/utils/localforage_handler";
 import { useCallback, useEffect, useState } from "react";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
+import { copyToClipboard } from "@/utils/utils";
 
 const OTPManager = function () {
 	const [open, setOpen] = useState(false);
@@ -90,15 +91,6 @@ const OTPManager = function () {
 			}
 		}
 	);
-
-	const copyToClipboard = async (text: string) => {
-		await navigator.clipboard.writeText(text);
-		emitCustomEvent("SnackBarEvent", {
-			type: "SHOW_SNACKBAR",
-			message: "Copied to clipboard!",
-			severity: "info",
-		});
-	};
 
 	return (
 		<>

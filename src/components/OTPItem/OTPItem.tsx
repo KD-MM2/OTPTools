@@ -39,6 +39,7 @@ const OTPItem = ({ otp, onClick }: { otp: OTPData; onClick: any }) => {
 			sx={{ position: "relative" }}
 			{...getRippleHandlers()}
 			onClick={onClick}
+			elevation={5}
 		>
 			<TouchRipple ref={rippleRef} center={false} />
 			<Grid container sx={{ justifyContent: "space-between" }}>

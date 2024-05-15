@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+// Material UI Components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -7,20 +7,30 @@ import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
 import Collapse from "@mui/material/Collapse";
 import Paper from "@mui/material/Paper";
+
+// Material UI Icons
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
+import CopyAllIcon from "@mui/icons-material/CopyAll";
+
+// Custom Components
+import CustomTextField from "@/components/OTPGenerator/CustomTextField";
+
+// Utils
+import { useCallback, useEffect, useReducer } from "react";
+import { initialState, reducer } from "@/utils/reducer";
 import {
 	base32toHex,
 	generateTOTP,
 	generateSecret,
 	getCounterFromTime,
 } from "@/utils/otp";
-import { initialState, reducer } from "@/utils/reducer";
 import QRCode from "qrcode";
-import DummyQR from "@/assets/qr.svg";
-import CustomTextField from "@/components/OTPGenerator/CustomTextField";
 import { emitCustomEvent } from "react-custom-events";
 import { getSeeds, setSeeds } from "@/utils/localforage_handler";
+import { copyToClipboard } from "@/utils/utils";
+import DummyQR from "@/assets/qr.svg";
+import IconButton from "@mui/material/IconButton";
 
 const OTPGenerator = function () {
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -28,7 +38,7 @@ const OTPGenerator = function () {
 	const displayQR = state.accountName.length > 0;
 	const trimmedSecret = state.secret.replace(/\s/g, "");
 
-	const UpdateOTP = React.useCallback(() => {
+	const UpdateOTP = useCallback(() => {
 		const epoch = Math.round(Date.now() / 1000.0);
 		const _previousOtp = generateTOTP({
 			key: state.secret,
@@ -93,11 +103,11 @@ const OTPGenerator = function () {
 		trimmedSecret,
 	]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		UpdateOTP();
 	}, [UpdateOTP]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const timer = setInterval(() => {
 			const epoch = Math.round(Date.now() / 1000.0);
 			dispatch({ type: "setEpochTime", payload: epoch });
@@ -158,6 +168,22 @@ const OTPGenerator = function () {
 								payload: e.target.value,
 							})
 						}
+						props={{
+							InputProps: {
+								endAdornment: (
+									<IconButton
+										sx={{ p: 1, m: 0 }}
+										size="small"
+										color="primary"
+										onClick={() =>
+											copyToClipboard(trimmedSecret)
+										}
+									>
+										<CopyAllIcon fontSize="inherit" />
+									</IconButton>
+								),
+							},
+						}}
 					/>
 
 					<Button
@@ -190,18 +216,33 @@ const OTPGenerator = function () {
 							label="Previous OTP"
 							ro={true}
 							value={state.previousOTP}
+							pointer
+							props={{
+								onClick: () =>
+									copyToClipboard(String(state.previousOTP)),
+							}}
 						/>
 						<CustomTextField
 							id="current-otp"
 							label="Current OTP"
 							ro={true}
 							value={state.currentOTP}
+							pointer
+							props={{
+								onClick: () =>
+									copyToClipboard(String(state.currentOTP)),
+							}}
 						/>
 						<CustomTextField
 							id="Next OTP"
 							label="Next OTP"
 							ro={true}
 							value={state.nextOTP}
+							pointer
+							props={{
+								onClick: () =>
+									copyToClipboard(String(state.nextOTP)),
+							}}
 						/>
 					</Stack>
 					<LinearProgress
@@ -260,7 +301,7 @@ const OTPGenerator = function () {
 									width: "256px",
 									height: "256px",
 								}}
-								elevation={4}
+								elevation={5}
 							/>
 						</Box>
 					</Collapse>

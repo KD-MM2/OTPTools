@@ -67,7 +67,7 @@ function SortableItem({ children, id }: PropsWithChildren<Props>) {
 
 	return (
 		<SortableItemContext.Provider value={context}>
-			<StyledPaper ref={setNodeRef} style={style}>
+			<StyledPaper ref={setNodeRef} style={style} elevation={5}>
 				{children}
 			</StyledPaper>
 		</SortableItemContext.Provider>
