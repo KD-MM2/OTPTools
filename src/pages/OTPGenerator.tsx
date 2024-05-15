@@ -11,7 +11,6 @@ import Paper from "@mui/material/Paper";
 // Material UI Icons
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
-import CopyAllIcon from "@mui/icons-material/CopyAll";
 
 // Custom Components
 import CustomTextField from "@/components/OTPGenerator/CustomTextField";
@@ -28,9 +27,8 @@ import {
 import QRCode from "qrcode";
 import { emitCustomEvent } from "react-custom-events";
 import { getSeeds, setSeeds } from "@/utils/localforage_handler";
-import { copyToClipboard } from "@/utils/utils";
 import DummyQR from "@/assets/qr.svg";
-import IconButton from "@mui/material/IconButton";
+import CopyButton from "@/components/OTPGenerator/CopyButton";
 
 const OTPGenerator = function () {
 	const [state, dispatch] = useReducer(reducer, initialState);
@@ -171,16 +169,7 @@ const OTPGenerator = function () {
 						props={{
 							InputProps: {
 								endAdornment: (
-									<IconButton
-										sx={{ p: 1, m: 0 }}
-										size="small"
-										color="primary"
-										onClick={() =>
-											copyToClipboard(trimmedSecret)
-										}
-									>
-										<CopyAllIcon fontSize="inherit" />
-									</IconButton>
+									<CopyButton value={trimmedSecret} />
 								),
 							},
 						}}
@@ -216,10 +205,14 @@ const OTPGenerator = function () {
 							label="Previous OTP"
 							ro={true}
 							value={state.previousOTP}
-							pointer
 							props={{
-								onClick: () =>
-									copyToClipboard(String(state.previousOTP)),
+								InputProps: {
+									endAdornment: (
+										<CopyButton
+											value={String(state.previousOTP)}
+										/>
+									),
+								},
 							}}
 						/>
 						<CustomTextField
@@ -227,10 +220,14 @@ const OTPGenerator = function () {
 							label="Current OTP"
 							ro={true}
 							value={state.currentOTP}
-							pointer
 							props={{
-								onClick: () =>
-									copyToClipboard(String(state.currentOTP)),
+								InputProps: {
+									endAdornment: (
+										<CopyButton
+											value={String(state.currentOTP)}
+										/>
+									),
+								},
 							}}
 						/>
 						<CustomTextField
@@ -238,10 +235,14 @@ const OTPGenerator = function () {
 							label="Next OTP"
 							ro={true}
 							value={state.nextOTP}
-							pointer
 							props={{
-								onClick: () =>
-									copyToClipboard(String(state.nextOTP)),
+								InputProps: {
+									endAdornment: (
+										<CopyButton
+											value={String(state.nextOTP)}
+										/>
+									),
+								},
 							}}
 						/>
 					</Stack>
@@ -313,24 +314,52 @@ const OTPGenerator = function () {
 						label={`Secret Hex (${state.keyLength} bits)`}
 						ro={true}
 						value={state.keyHex}
+						props={{
+							InputProps: {
+								endAdornment: (
+									<CopyButton value={state.keyHex} />
+								),
+							},
+						}}
 					/>
 					<CustomTextField
 						id="epoch-time"
 						label="Epoch time"
 						ro={true}
 						value={state.epochTime}
+						props={{
+							InputProps: {
+								endAdornment: (
+									<CopyButton
+										value={String(state.epochTime)}
+									/>
+								),
+							},
+						}}
 					/>
 					<CustomTextField
 						id="epoch-iteration"
 						label="Epoch iteration"
 						ro={true}
 						value={state.epochIteration}
+						props={{
+							InputProps: {
+								endAdornment: (
+									<CopyButton value={state.epochIteration} />
+								),
+							},
+						}}
 					/>
 					<CustomTextField
 						id="hmac"
 						label="HMAC"
 						ro={true}
 						value={state.hmac}
+						props={{
+							InputProps: {
+								endAdornment: <CopyButton value={state.hmac} />,
+							},
+						}}
 					/>
 				</Stack>
 			</Box>
