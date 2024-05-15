@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useId, useMemo } from "react";
 import type { CSSProperties, PropsWithChildren } from "react";
 import type {
 	DraggableSyntheticListeners,
@@ -71,6 +71,7 @@ function DragHandle() {
 	const { attributes, listeners, ref } = useContext(SortableItemContext);
 	return (
 		<Button
+			key={useId()}
 			sx={{ p: "15px" }}
 			{...attributes}
 			{...listeners}

@@ -119,10 +119,12 @@ const OTPGenerator = function () {
 			return;
 		}
 
-		getSeeds().then((seeds) =>
+		getSeeds().then((seeds) => {
+			const oldSeeds: OTPData[] = JSON.parse(seeds);
 			setSeeds([
-				...JSON.parse(seeds),
+				...oldSeeds,
 				{
+					id: oldSeeds.length + 1,
 					user: state.accountName,
 					issuer: state.issuer,
 					secret: state.secret.replace(/\s/g, ""),
@@ -133,8 +135,8 @@ const OTPGenerator = function () {
 					message: "Added new OTP to OTP List!",
 					severity: "success",
 				})
-			)
-		);
+			);
+		});
 	};
 
 	return (

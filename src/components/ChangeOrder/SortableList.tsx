@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useId, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import {
 	defaultDropAnimationSideEffects,
@@ -71,14 +71,15 @@ function SortableList<T extends BaseItem>({
 				setActive(null);
 			}}
 		>
-			<SortableContext items={items}>
+			<SortableContext items={items} key={useId()}>
 				<List
 					sx={{
 						display: "flex",
 						flexDirection: "column",
 						gap: "10px",
-						padding: 0,
+						width: "80%",
 					}}
+					key={useId()}
 					role="application"
 				>
 					{items.map((item) => (

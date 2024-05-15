@@ -139,6 +139,7 @@ function generateSecret() {
 
 const otpStringParser = (data: string) => {
 	const otpData: OTPData = {
+		id: -1,
 		user: "",
 		issuer: "",
 		secret: "",

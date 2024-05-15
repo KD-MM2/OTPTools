@@ -70,7 +70,14 @@ const OTPManager = function () {
 		(data: { type: string; data: OTPData[] }) => {
 			switch (data.type) {
 				case "ADD_NEW_OTP":
-					handleAddNewOTP(data.data);
+					handleAddNewOTP(
+						data.data.map((otp, idx) => {
+							return {
+								...otp,
+								id: orgOtps.length + idx,
+							};
+						})
+					);
 					break;
 			}
 		}

@@ -36,6 +36,7 @@ const Transition = forwardRef(function Transition(
 
 const defaultOTP: OTPData[] = [
 	{
+		id: 1,
 		user: "",
 		issuer: "",
 		secret: "",
@@ -259,6 +260,7 @@ export default function AddNewOTPDialog() {
 						setOTPList((otpList) => [
 							...otpList,
 							{
+								id: otpList.length + 1,
 								user: "",
 								issuer: "",
 								secret: "",
