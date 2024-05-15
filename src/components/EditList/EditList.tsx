@@ -45,7 +45,7 @@ const EditList = () => {
 		getSeeds().then((seeds) =>
 			setOtps(seeds.trim() === "" ? [] : JSON.parse(seeds))
 		);
-	}, []);
+	}, [open]);
 
 	const handleChange = useCallback((updated: OTPData[]) => {
 		setOtps(updated);
