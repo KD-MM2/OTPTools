@@ -1,6 +1,9 @@
+// Material UI Icons
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
-import SortIcon from "@mui/icons-material/Sort";
+import EditIcon from "@mui/icons-material/Edit";
+
+// Utils
 import { emitCustomEvent } from "react-custom-events";
 
 const FabActions: FabAction[] = [
@@ -12,11 +15,11 @@ const FabActions: FabAction[] = [
 		cb: () => emitCustomEvent("OpenDialog", "OPEN_SETTINGS_DIALOG"),
 	},
 	{
-		id: "sort",
+		id: "edit",
 		enabled: true,
-		icon: <SortIcon />,
-		name: "CHANGE ORDER",
-		cb: () => emitCustomEvent("OpenDialog", "OPEN_CHANGE_ORDER_DIALOG"),
+		icon: <EditIcon />,
+		name: "EDIT",
+		cb: () => emitCustomEvent("OpenDialog", "OPEN_EDIT_DIALOG"),
 	},
 	{
 		id: "add",

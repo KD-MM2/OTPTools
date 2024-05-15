@@ -1,13 +1,15 @@
-"use client";
-import React from "react";
+// Material UI Components
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+
+// Utils
 import { useCustomEventListener } from "react-custom-events";
+import { useState } from "react";
 
 const SnackBar = () => {
-	const [open, setOpen] = React.useState(false);
-	const [message, setMessage] = React.useState("");
-	const [severity, setSeverity] = React.useState<
+	const [open, setOpen] = useState(false);
+	const [message, setMessage] = useState("");
+	const [severity, setSeverity] = useState<
 		"success" | "info" | "warning" | "error"
 	>("info");
 

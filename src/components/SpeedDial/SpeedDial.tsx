@@ -1,12 +1,14 @@
+// Material UI Components
 import Box from "@mui/material/Box";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import { default as MuiSpeedDial } from "@mui/material/SpeedDial";
 
-import FabActions from "./FabActions";
+// Custom Components
+import FabActions from "@/components/SpeedDial/FabActions";
+import EditList from "@/components/EditList/EditList";
 import AddNewOTPDialog from "@/components/AddNewOTPDialog/AddNewOTPDialog";
-import ChangeOrder from "@/components/ChangeOrder/ChangeOrder";
 
 const SpeedDial = ({ open, setOpen, progress }: SpeedDialProps) => {
 	const handleOpen = () => setOpen(!open);
@@ -24,7 +26,7 @@ const SpeedDial = ({ open, setOpen, progress }: SpeedDialProps) => {
 		>
 			<Backdrop open={open} />
 			<AddNewOTPDialog />
-			<ChangeOrder />
+			<EditList />
 			<MuiSpeedDial
 				ariaLabel="SpeedDial"
 				sx={{

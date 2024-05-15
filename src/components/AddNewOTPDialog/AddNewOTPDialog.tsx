@@ -1,38 +1,21 @@
-import {
-	forwardRef,
-	ReactElement,
-	Ref,
-	useState,
-	useRef,
-	useEffect,
-	RefObject,
-	useCallback,
-} from "react";
+// Material UI Components
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import List from "@mui/material/List";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
-import NewOTPItem from "./NewOTPItem";
 import Divider from "@mui/material/Divider";
-import { BrowserQRCodeReader } from "@zxing/browser";
-import SnackBar from "@/components/BottomBar/SnackBar";
-import { otpStringParser } from "@/utils/otp";
 
-const Transition = forwardRef(function Transition(
-	props: TransitionProps & {
-		children: ReactElement;
-	},
-	ref: Ref<unknown>
-) {
-	return <Slide direction="up" ref={ref} {...props} />;
-});
+// Custom Components
+import SnackBar from "@/components/BottomBar/SnackBar";
+import DialogAppbar from "@/components/FullscreenDialogAppbar/FullscreenDialogAppbar";
+import Transition from "@/components/FullscreenDialogAppbar/SlideUpTransition";
+import NewOTPItem from "@/components/AddNewOTPDialog/NewOTPItem";
+
+// Utils
+import { useState, useRef, useEffect, RefObject, useCallback } from "react";
+import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
+import { BrowserQRCodeReader } from "@zxing/browser";
+import { otpStringParser } from "@/utils/otp";
 
 const defaultOTP: OTPData[] = [
 	{
@@ -203,32 +186,12 @@ export default function AddNewOTPDialog() {
 			onClose={handleClose}
 			TransitionComponent={Transition}
 		>
-			<AppBar sx={{ position: "sticky" }}>
-				<Toolbar>
-					<IconButton
-						edge="start"
-						color="inherit"
-						onClick={handleClose}
-						aria-label="close"
-					>
-						<CloseIcon />
-					</IconButton>
-					<Typography
-						sx={{ ml: 2, flex: 1 }}
-						variant="h6"
-						component="div"
-					>
-						ADD NEW OTP
-					</Typography>
-					<Button
-						autoFocus
-						color="inherit"
-						onClick={() => handleAddOTP()}
-					>
-						SAVE
-					</Button>
-				</Toolbar>
-			</AppBar>
+			<DialogAppbar
+				title="ADD OTP"
+				actionText="ADD"
+				handleAction={handleAddOTP}
+				handleClose={handleClose}
+			/>
 			<List
 				ref={listRef as unknown as RefObject<HTMLUListElement>}
 				sx={{

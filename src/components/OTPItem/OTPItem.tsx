@@ -1,12 +1,18 @@
+// Material UI Components
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import useTheme from "@mui/material/styles/useTheme";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Box, useTheme } from "@mui/material";
-import { useRef } from "react";
-import GridItem from "@/components/OTPManager/OTPItem/GridItem";
-import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
 import useTouchRipple from "@mui/material/useTouchRipple";
+import TouchRipple from "@mui/material/ButtonBase/TouchRipple";
+
+// Custom Components
+import GridItem from "@/components/OTPItem/GridItem";
+
+// Utils
+import { useRef } from "react";
 
 const OTPItem = ({ otp, onClick }: { otp: OTPData; onClick: any }) => {
 	const theme = useTheme();
