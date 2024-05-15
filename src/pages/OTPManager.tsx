@@ -30,11 +30,15 @@ const OTPManager = function () {
 
 	useEffect(() => UpdateOTP(), [UpdateOTP]);
 
-	useEffect(() => {
+	const refreshSeedList = useCallback(() => {
 		getSeeds().then((seeds) =>
 			setOrgOtps(seeds.trim() === "" ? [] : JSON.parse(seeds))
 		);
 	}, []);
+
+	useEffect(() => {
+		refreshSeedList();
+	}, [refreshSeedList]);
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -74,10 +78,14 @@ const OTPManager = function () {
 						data.data.map((otp, idx) => {
 							return {
 								...otp,
-								id: orgOtps.length + idx,
+								id: orgOtps.length + (idx + 1),
 							};
 						})
 					);
+					break;
+
+				case "REFRESH_OTP_LIST":
+					refreshSeedList();
 					break;
 			}
 		}

@@ -21,6 +21,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
+import SnackBar from "@/components/BottomBar/SnackBar";
 
 const Transition = forwardRef(function Transition(
 	props: TransitionProps & {
@@ -40,7 +41,7 @@ const ChangeOrder = () => {
 
 	useCustomEventListener("OpenDialog", (data: string) => {
 		switch (data) {
-			case "OPEN_SORT_ITEM_DIALOG":
+			case "OPEN_CHANGE_ORDER_DIALOG":
 				if (!open) handleClickOpen();
 				else handleClose();
 				break;
@@ -58,14 +59,29 @@ const ChangeOrder = () => {
 	}, []);
 
 	const handleSave = useCallback(() => {
-		setSeeds(otps).then(() =>
-			emitCustomEvent("SnackBarEvent", {
-				type: "SHOW_SNACKBAR",
-				message: "Sorted list saved!",
-				severity: "success",
+		setSeeds(otps)
+			.then(() => {
+				emitCustomEvent("Operations", {
+					type: "REFRESH_OTP_LIST",
+					data: [],
+				});
+				emitCustomEvent("SnackBarEvent", {
+					type: "SHOW_SNACKBAR",
+					message: "Sorted list saved!",
+					severity: "success",
+				});
 			})
-		);
-	}, [otps]);
+			.catch((err) => {
+				emitCustomEvent("SnackBarEvent", {
+					type: "SHOW_SNACKBAR",
+					message: `Error: ${err}`,
+					severity: "error",
+				});
+			})
+			.finally(() => {
+				handleClose();
+			});
+	}, [handleClose, otps]);
 
 	return (
 		<>
@@ -90,7 +106,7 @@ const ChangeOrder = () => {
 							variant="h6"
 							component="div"
 						>
-							SORT ITEMS
+							CHANGE LIST ORDER
 						</Typography>
 						<Button
 							autoFocus
@@ -119,6 +135,7 @@ const ChangeOrder = () => {
 						)}
 					/>
 				</Box>
+				<SnackBar />
 			</Dialog>
 		</>
 	);

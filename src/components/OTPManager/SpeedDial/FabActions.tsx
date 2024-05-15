@@ -15,8 +15,8 @@ const FabActions: FabAction[] = [
 		id: "sort",
 		enabled: true,
 		icon: <SortIcon />,
-		name: "SORT ITEMS",
-		cb: () => emitCustomEvent("OpenDialog", "OPEN_SORT_ITEM_DIALOG"),
+		name: "CHANGE ORDER",
+		cb: () => emitCustomEvent("OpenDialog", "OPEN_CHANGE_ORDER_DIALOG"),
 	},
 	{
 		id: "add",
