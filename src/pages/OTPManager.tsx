@@ -2,11 +2,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import { useCallback, useEffect, useState } from "react";
-import { generateTOTP } from "@/utils/otp";
 import OTPItem from "@/components/OTPManager/OTPItem/OTPItem";
 import SpeedDial from "@/components/OTPManager/SpeedDial/SpeedDial";
+import { generateTOTP } from "@/utils/otp";
 import { getSeeds, setSeeds } from "@/utils/localforage_handler";
+import { useCallback, useEffect, useState } from "react";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
 
 const OTPManager = function () {
@@ -97,10 +97,7 @@ const OTPManager = function () {
 						<div key={index}>
 							<OTPItem
 								otp={otp}
-								onClick={() => {
-									console.log("Clicked");
-									copyToClipboard(otp.otp ?? "");
-								}}
+								onClick={() => copyToClipboard(otp.otp ?? "")}
 							/>
 						</div>
 					))}

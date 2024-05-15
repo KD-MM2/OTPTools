@@ -6,6 +6,7 @@ import {
 	useRef,
 	useEffect,
 	RefObject,
+	useCallback,
 } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -19,6 +20,10 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
 import NewOTPItem from "./NewOTPItem";
+import Divider from "@mui/material/Divider";
+import { BrowserQRCodeReader } from "@zxing/browser";
+import SnackBar from "@/components/BottomBar/SnackBar";
+import { otpStringParser } from "@/utils/otp";
 
 const Transition = forwardRef(function Transition(
 	props: TransitionProps & {
@@ -41,6 +46,7 @@ export default function AddNewOTPDialog() {
 	const [open, setOpen] = useState(false);
 	const [otpList, setOTPList] = useState<OTPData[]>(defaultOTP);
 	const listRef = useRef<HTMLDivElement>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		if (listRef.current) {
@@ -50,8 +56,8 @@ export default function AddNewOTPDialog() {
 		}
 	}, [otpList]);
 
-	const handleClickOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
+	const handleClickOpen = useCallback(() => setOpen(true), []);
+	const handleClose = useCallback(() => setOpen(false), []);
 
 	useCustomEventListener("OpenDialog", (data: string) => {
 		switch (data) {
@@ -114,6 +120,80 @@ export default function AddNewOTPDialog() {
 			})),
 		});
 	};
+
+	const processImage = useCallback(async (file: File) => {
+		new BrowserQRCodeReader()
+			.decodeFromImageUrl(URL.createObjectURL(file))
+			.then((result) => {
+				const newOTP = otpStringParser(result.getText());
+				if (
+					newOTP.secret === "" ||
+					result.getText() === "" ||
+					result.getText() === null
+				)
+					throw new Error();
+
+				setOTPList((oldList) => {
+					const newList = [...oldList, newOTP];
+					const isFirstEntryEmpty =
+						oldList.length === 1 &&
+						(oldList[0].user === "" || oldList[0].secret === "");
+					return isFirstEntryEmpty ? [newOTP] : newList;
+				});
+			})
+			.catch(() => {
+				emitCustomEvent("SnackBarEvent", {
+					type: "SHOW_SNACKBAR",
+					message: "Failed to extract OTP from image!",
+					severity: "error",
+				});
+			})
+			.finally(() => {
+				fileInputRef.current!.value = "";
+			});
+	}, []);
+
+	const handleFileChange = useCallback(
+		(event: React.ChangeEvent<HTMLInputElement>) => {
+			const file = event.target.files?.[0];
+			if (file) {
+				processImage(file);
+			}
+		},
+		[processImage]
+	);
+
+	const handlePaste = useCallback(
+		(event: ClipboardEvent) => {
+			const items = event.clipboardData?.items;
+			if (items) {
+				for (const item of items) {
+					if (item.type.indexOf("image") !== -1) {
+						const file = item.getAsFile();
+						if (file) {
+							processImage(file);
+							break;
+						}
+					} else {
+						emitCustomEvent("SnackBarEvent", {
+							type: "SHOW_SNACKBAR",
+							message: "Failed to extract image from clipboard!",
+							severity: "error",
+						});
+					}
+				}
+			}
+		},
+		[processImage]
+	);
+
+	useEffect(() => {
+		if (!open) return;
+		document.addEventListener("paste", handlePaste);
+		return () => {
+			document.removeEventListener("paste", handlePaste);
+		};
+	}, [handlePaste, open]);
 
 	return (
 		<Dialog
@@ -189,7 +269,25 @@ export default function AddNewOTPDialog() {
 				>
 					Add more
 				</Button>
+				<Divider sx={{ width: "50%" }}>OR</Divider>
+				<Button
+					onClick={() => fileInputRef?.current!.click()}
+					autoFocus={false}
+				>
+					Select QR image
+					<input
+						type="file"
+						accept="image/*"
+						ref={fileInputRef}
+						onChange={(event) => handleFileChange(event)}
+						hidden
+					/>
+				</Button>
+				<Typography variant="caption">
+					(Copy-Paste works too!)
+				</Typography>
 			</List>
+			<SnackBar />
 		</Dialog>
 	);
 }

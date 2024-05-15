@@ -9,9 +9,10 @@ export {
 	generateSecret,
 	base32toHex,
 	getCounterFromTime,
+	otpStringParser,
 };
 
-function hexToBytes(hex: string) {                             
+function hexToBytes(hex: string) {
 	return (hex.match(/.{1,2}/g) ?? []).map((char) =>
 		Number.parseInt(char, 16)
 	);
@@ -101,7 +102,6 @@ function generateTOTP({
 	now?: number;
 	timeStep?: number;
 }) {
-
 	return generateHOTP({
 		key: key.replace(/\s/g, "").toUpperCase(),
 		counter: Math.floor(now / timeStep),
@@ -136,3 +136,17 @@ function generateSecret() {
 	);
 	return key.match(/.{8}/g)?.join(" ") ?? "";
 }
+
+const otpStringParser = (data: string) => {
+	const otpData: OTPData = {
+		user: "",
+		issuer: "",
+		secret: "",
+	};
+	const url = new URL(data);
+	const searchParams = new URLSearchParams(url.search);
+	otpData.user = url.pathname.split("/").slice(-1)[0] ?? "";
+	otpData.issuer = searchParams.get("issuer") ?? "";
+	otpData.secret = searchParams.get("secret") ?? "";
+	return otpData;
+};
