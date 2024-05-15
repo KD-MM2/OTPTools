@@ -11,6 +11,7 @@ function encryptKey(key: CryptoJS.lib.WordArray) {
 }
 
 function decryptKey(encryptedKey: string) {
+	if (!encryptedKey) return "";
 	return CryptoJS.enc.Base64.parse(encryptedKey);
 }
 

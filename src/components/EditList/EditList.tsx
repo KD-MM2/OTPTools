@@ -60,7 +60,7 @@ const EditList = () => {
 				});
 				emitCustomEvent("SnackBarEvent", {
 					type: "SHOW_SNACKBAR",
-					message: "Sorted list saved!",
+					message: "Changes saved!",
 					severity: "success",
 				});
 			})

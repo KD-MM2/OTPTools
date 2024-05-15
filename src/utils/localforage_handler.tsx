@@ -18,7 +18,7 @@ localForage.config({
 
 async function getKey() {
 	const data = await localForage.getItem("key");
-	if (!data) {
+	if (!data || data === "") {
 		await localForage.setItem("key", encryptKey(generateKey()));
 	}
 	return decryptKey(data as string).toString();
