@@ -1,6 +1,6 @@
 import Layout from "@/Layout";
 import { Routes, Route, Link } from "react-router-dom";
-import OTPGenerator from "@/pages/OTPGenerator";
+import OTPGenerator from "@/pages/otp_generator";
 import OTPManager from "@/pages/OTPManager";
 import "@/App.css";
 
