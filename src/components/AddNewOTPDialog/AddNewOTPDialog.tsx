@@ -16,6 +16,7 @@ import { useState, useRef, useEffect, RefObject, useCallback } from "react";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
 import { BrowserQRCodeReader } from "@zxing/browser";
 import { otpStringParser } from "@/utils/otp";
+import SelectFileButton from "./select_file_button";
 
 const defaultOTP: OTPData[] = [
 	{
@@ -235,19 +236,11 @@ export default function AddNewOTPDialog() {
 					Add more
 				</Button>
 				<Divider sx={{ width: "50%" }}>OR</Divider>
-				<Button
-					onClick={() => fileInputRef?.current!.click()}
-					autoFocus={false}
-				>
-					Select QR image
-					<input
-						type="file"
-						accept="image/*"
-						ref={fileInputRef}
-						onChange={(event) => handleFileChange(event)}
-						hidden
-					/>
-				</Button>
+				<SelectFileButton
+					text="Select QR image"
+					handleFileChange={handleFileChange}
+					mimeTypes="image/*"
+				/>
 				<Typography variant="caption">
 					(Copy-Paste works too!)
 				</Typography>
