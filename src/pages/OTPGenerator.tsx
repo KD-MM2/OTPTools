@@ -17,7 +17,7 @@ import CustomTextField from "@/components/OTPGenerator/CustomTextField";
 
 // Utils
 import { useCallback, useEffect, useReducer } from "react";
-import { initialState, reducer } from "@/utils/reducer";
+import { initialState, reducer } from "@/utils/otp_generator_context";
 import {
 	base32toHex,
 	generateTOTP,

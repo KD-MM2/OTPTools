@@ -9,6 +9,7 @@ import { default as MuiSpeedDial } from "@mui/material/SpeedDial";
 import FabActions from "@/components/SpeedDial/FabActions";
 import EditList from "@/components/EditList/EditList";
 import AddNewOTPDialog from "@/components/AddNewOTPDialog/AddNewOTPDialog";
+import Settings from "@/components/Settings/Settings";
 
 const SpeedDial = ({ open, setOpen, progress }: SpeedDialProps) => {
 	const handleOpen = () => setOpen(!open);
@@ -27,6 +28,7 @@ const SpeedDial = ({ open, setOpen, progress }: SpeedDialProps) => {
 			<Backdrop open={open} />
 			<AddNewOTPDialog />
 			<EditList />
+			<Settings />
 			<MuiSpeedDial
 				ariaLabel="SpeedDial"
 				sx={{
