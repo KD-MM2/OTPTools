@@ -19,7 +19,7 @@ import {
 	sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import type { Active, UniqueIdentifier } from "@dnd-kit/core";
-import { DragHandle, SortableItem } from "@/components/edit/components";
+import { DragHandle, SortableItem } from "./sortable_item";
 
 interface BaseItem {
 	id: UniqueIdentifier;

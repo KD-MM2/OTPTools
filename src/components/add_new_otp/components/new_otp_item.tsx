@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
 // Custom Components
-import CustomTextField from "@/components/otp_generator/CustomTextField";
+import { CustomTextField } from "@/components/otp_generator";
 
 export default function NewOTPItem({
 	otp,

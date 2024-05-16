@@ -1,11 +1,14 @@
-// Material 
+// Material UI Components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import OTPItem from "@/components/OTPItem/OTPItem";
-import SpeedDial from "@/components/SpeedDial/SpeedDial";
-import 
+
+// Custom Components
+import { OTPItem } from "@/components/otp_manager";
+import { SpeedDial } from "@/views";
+
+// Utils
 import { generateTOTP } from "@/utils/otp";
 import { getSeeds, setSeeds } from "@/utils/localforage_handler";
 import { useCallback, useEffect, useState } from "react";
