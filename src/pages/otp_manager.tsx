@@ -98,25 +98,23 @@ const OTPManager = function () {
 	);
 
 	return (
-		<>
-			<Box>
-				<Typography variant="h6" gutterBottom>
-					One-Time Password Manager
-				</Typography>
-				<Divider />
-				<Stack direction="column" spacing={2} sx={{ pt: 1 }}>
-					{otps.map((otp, index) => (
-						<div key={index}>
-							<OTPItem
-								otp={otp}
-								onClick={() => copyToClipboard(otp.otp ?? "")}
-							/>
-						</div>
-					))}
-				</Stack>
-			</Box>
+		<Box>
+			<Typography variant="h6" gutterBottom>
+				One-Time Password Manager
+			</Typography>
+			<Divider />
+			<Stack direction="column" spacing={2} sx={{ pt: 1 }}>
+				{otps.map((otp, index) => (
+					<div key={index}>
+						<OTPItem
+							otp={otp}
+							onClick={() => copyToClipboard(otp.otp ?? "")}
+						/>
+					</div>
+				))}
+			</Stack>
 			<SpeedDial open={open} setOpen={setOpen} progress={progress} />
-		</>
+		</Box>
 	);
 };
 

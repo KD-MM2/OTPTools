@@ -24,12 +24,11 @@ const defaultOTP: OTPData[] = [
 	},
 ];
 
-export default function AddNewOTP() {
+const AddNewOTP = () => {
 	const [open, setOpen] = useState(false);
 	const [otpList, setOTPList] = useState<OTPData[]>(defaultOTP);
 	const listRef = useRef<HTMLDivElement>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
-
 	useEffect(() => {
 		if (listRef.current) {
 			if (document.activeElement?.id.includes("new-otp-")) return;
@@ -156,12 +155,6 @@ export default function AddNewOTP() {
 							processImage(file);
 							break;
 						}
-					} else {
-						emitCustomEvent("SnackBarEvent", {
-							type: "SHOW_SNACKBAR",
-							message: "Failed to extract image from clipboard!",
-							severity: "error",
-						});
 					}
 				}
 			}
@@ -234,6 +227,7 @@ export default function AddNewOTP() {
 				</Button>
 				<Divider sx={{ width: "50%" }}>OR</Divider>
 				<SelectFileButton
+					fileInputRef={fileInputRef}
 					text="Select QR image"
 					handleFileChange={handleFileChange}
 					mimeTypes="image/*"
@@ -245,4 +239,6 @@ export default function AddNewOTP() {
 			<Snackbar />
 		</Dialog>
 	);
-}
+};
+
+export default AddNewOTP;

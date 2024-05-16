@@ -80,58 +80,54 @@ const Edit = () => {
 	}, [deleteId, otps]);
 
 	return (
-		<>
-			<Dialog
-				fullScreen
-				open={open}
-				onClose={handleClose}
-				TransitionComponent={SlideUpTransition}
+		<Dialog
+			fullScreen
+			open={open}
+			onClose={handleClose}
+			TransitionComponent={SlideUpTransition}
+		>
+			<DialogAppbar
+				title="EDIT OTP LIST"
+				actionText="SAVE"
+				handleAction={handleSave}
+				handleClose={handleClose}
+			/>
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+				}}
 			>
-				<DialogAppbar
-					title="EDIT OTP LIST"
-					actionText="SAVE"
-					handleAction={handleSave}
-					handleClose={handleClose}
+				<SortableList
+					items={otps}
+					onChange={handleChange}
+					renderItem={(item) => (
+						<SortableList.Item id={item.id} key={item.id}>
+							{item.user}
+							<br />
+							{item.issuer}
+							<Box>
+								<Button
+									sx={{ p: "15px" }}
+									color="error"
+									onClick={() => handleConfirmOpen(item.id)}
+								>
+									<DeleteForeverIcon />
+								</Button>
+								<SortableList.DragHandle />
+							</Box>
+						</SortableList.Item>
+					)}
 				/>
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-					}}
-				>
-					<SortableList
-						items={otps}
-						onChange={handleChange}
-						renderItem={(item) => (
-							<SortableList.Item id={item.id} key={item.id}>
-								{item.user}
-								<br />
-								{item.issuer}
-								<Box>
-									<Button
-										sx={{ p: "15px" }}
-										color="error"
-										onClick={() =>
-											handleConfirmOpen(item.id)
-										}
-									>
-										<DeleteForeverIcon />
-									</Button>
-									<SortableList.DragHandle />
-								</Box>
-							</SortableList.Item>
-						)}
-					/>
-				</Box>
-				<ConfirmRemoveDialog
-					open={confirmOpen}
-					handleClose={handleConfirmClose}
-					handleConfirm={handleConfirmDelete}
-				/>
-				<Snackbar />
-			</Dialog>
-		</>
+			</Box>
+			<ConfirmRemoveDialog
+				open={confirmOpen}
+				handleClose={handleConfirmClose}
+				handleConfirm={handleConfirmDelete}
+			/>
+			<Snackbar />
+		</Dialog>
 	);
 };
 

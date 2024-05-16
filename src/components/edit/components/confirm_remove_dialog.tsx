@@ -14,32 +14,28 @@ const ConfirmRemoveDialog = ({
 	open: boolean;
 	handleClose: () => void;
 	handleConfirm: () => void;
-}) => {
-	return (
-		<Dialog
-			keepMounted
-			open={open}
-			aria-labelledby="alert-dialog-title"
-			aria-describedby="alert-dialog-description"
-		>
-			<DialogTitle id="alert-dialog-title">
-				{"Confirm Delete"}
-			</DialogTitle>
-			<DialogContent>
-				<DialogContentText id="alert-dialog-description">
-					Are you sure you want to delete this item?
-				</DialogContentText>
-			</DialogContent>
-			<DialogActions>
-				<Button onClick={handleClose} color="primary">
-					Cancel
-				</Button>
-				<Button onClick={handleConfirm} color="primary" autoFocus>
-					Confirm
-				</Button>
-			</DialogActions>
-		</Dialog>
-	);
-};
+}) => (
+	<Dialog
+		keepMounted
+		open={open}
+		aria-labelledby="alert-dialog-title"
+		aria-describedby="alert-dialog-description"
+	>
+		<DialogTitle id="alert-dialog-title">{"Confirm Delete"}</DialogTitle>
+		<DialogContent>
+			<DialogContentText id="alert-dialog-description">
+				Are you sure you want to delete this item?
+			</DialogContentText>
+		</DialogContent>
+		<DialogActions>
+			<Button onClick={handleClose} color="primary">
+				Cancel
+			</Button>
+			<Button onClick={handleConfirm} color="primary" autoFocus>
+				Confirm
+			</Button>
+		</DialogActions>
+	</Dialog>
+);
 
 export default ConfirmRemoveDialog;

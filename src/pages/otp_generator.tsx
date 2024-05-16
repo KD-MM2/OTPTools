@@ -147,222 +147,212 @@ const OTPGenerator = function () {
 	};
 
 	return (
-		<>
-			<Box>
-				<Typography variant="h6" gutterBottom>
-					One-Time Password Calculator
-				</Typography>
-				<Stack direction="column" spacing={2} sx={{ pt: 1 }}>
-					<Divider>BASIC</Divider>
-					<CustomTextField
-						id="secret-seed"
-						label="Secret / Seed"
-						value={state.secret}
-						ro={false}
-						onChange={(e) =>
-							dispatch({
-								type: "setSecret",
-								payload: e.target.value,
-							})
-						}
-						props={{
-							InputProps: {
-								endAdornment: (
-									<CopyButton value={trimmedSecret} />
-								),
-							},
-						}}
-					/>
+		<Box>
+			<Typography variant="h6" gutterBottom>
+				One-Time Password Calculator
+			</Typography>
+			<Stack direction="column" spacing={2} sx={{ pt: 1 }}>
+				<Divider>BASIC</Divider>
+				<CustomTextField
+					id="secret-seed"
+					label="Secret / Seed"
+					value={state.secret}
+					ro={false}
+					onChange={(e) =>
+						dispatch({
+							type: "setSecret",
+							payload: e.target.value,
+						})
+					}
+					props={{
+						InputProps: {
+							endAdornment: <CopyButton value={trimmedSecret} />,
+						},
+					}}
+				/>
 
-					<Button
-						variant="contained"
-						size="small"
-						startIcon={<VpnKeyIcon />}
-						onClick={() =>
-							dispatch({
-								type: "setSecret",
-								payload: generateSecret(),
-							})
-						}
-					>
-						Generate
-					</Button>
-					<Button
-						variant="contained"
-						size="small"
-						startIcon={<EnhancedEncryptionIcon />}
-						onClick={() => handleAddToOTPList()}
-					>
-						Add to OTP Manager
-					</Button>
+				<Button
+					variant="contained"
+					size="small"
+					startIcon={<VpnKeyIcon />}
+					onClick={() =>
+						dispatch({
+							type: "setSecret",
+							payload: generateSecret(),
+						})
+					}
+				>
+					Generate
+				</Button>
+				<Button
+					variant="contained"
+					size="small"
+					startIcon={<EnhancedEncryptionIcon />}
+					onClick={() => handleAddToOTPList()}
+				>
+					Add to OTP Manager
+				</Button>
 
-					<div style={{ height: "0.5em" }} />
-					<Divider>RESULT</Divider>
-					<Stack direction="row" spacing={1}>
-						<CustomTextField
-							id="previous-otp"
-							label="Previous OTP"
-							ro={true}
-							value={state.previousOTP}
-							props={{
-								InputProps: {
-									endAdornment: (
-										<CopyButton
-											value={String(state.previousOTP)}
-										/>
-									),
-								},
-							}}
-						/>
-						<CustomTextField
-							id="current-otp"
-							label="Current OTP"
-							ro={true}
-							value={state.currentOTP}
-							props={{
-								InputProps: {
-									endAdornment: (
-										<CopyButton
-											value={String(state.currentOTP)}
-										/>
-									),
-								},
-							}}
-						/>
-						<CustomTextField
-							id="Next OTP"
-							label="Next OTP"
-							ro={true}
-							value={state.nextOTP}
-							props={{
-								InputProps: {
-									endAdornment: (
-										<CopyButton
-											value={String(state.nextOTP)}
-										/>
-									),
-								},
-							}}
-						/>
-					</Stack>
-					<LinearProgress
-						variant="determinate"
-						value={state.progress}
-						color={
-							state.progress <= 15
-								? "error"
-								: state.progress <= 40
-									? "warning"
-									: "success"
-						}
-						sx={{ borderRadius: 1, height: "0.5em" }}
-					/>
-
-					<div style={{ height: "0.5em" }} />
-					<Divider>QR CODE</Divider>
+				<div style={{ height: "0.5em" }} />
+				<Divider>RESULT</Divider>
+				<Stack direction="row" spacing={1}>
 					<CustomTextField
-						id="account-name"
-						label="Account Name"
-						value={state.accountName}
-						ro={false}
-						onChange={(e) =>
-							dispatch({
-								type: "setAccountName",
-								payload: e.target.value,
-							})
-						}
-					/>
-					<CustomTextField
-						id="issuer"
-						label="Issuer (optional)"
-						value={state.issuer}
-						ro={false}
-						onChange={(e) =>
-							dispatch({
-								type: "setIssuer",
-								payload: e.target.value,
-							})
-						}
-					/>
-					<Collapse in={displayQR}>
-						<Box
-							sx={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center",
-							}}
-						>
-							<Paper
-								id="qr-code"
-								alt="QRCode"
-								component="img"
-								src={state.qrCode}
-								sx={{
-									width: "256px",
-									height: "256px",
-								}}
-								elevation={5}
-							/>
-						</Box>
-					</Collapse>
-
-					<div style={{ height: "0.5em" }} />
-					<Divider>ADVANCED</Divider>
-					<CustomTextField
-						id="secret-key-length"
-						label={`Secret Hex (${state.keyLength} bits)`}
+						id="previous-otp"
+						label="Previous OTP"
 						ro={true}
-						value={state.keyHex}
-						props={{
-							InputProps: {
-								endAdornment: (
-									<CopyButton value={state.keyHex} />
-								),
-							},
-						}}
-					/>
-					<CustomTextField
-						id="epoch-time"
-						label="Epoch time"
-						ro={true}
-						value={state.epochTime}
+						value={state.previousOTP}
 						props={{
 							InputProps: {
 								endAdornment: (
 									<CopyButton
-										value={String(state.epochTime)}
+										value={String(state.previousOTP)}
 									/>
 								),
 							},
 						}}
 					/>
 					<CustomTextField
-						id="epoch-iteration"
-						label="Epoch iteration"
+						id="current-otp"
+						label="Current OTP"
 						ro={true}
-						value={state.epochIteration}
+						value={state.currentOTP}
 						props={{
 							InputProps: {
 								endAdornment: (
-									<CopyButton value={state.epochIteration} />
+									<CopyButton
+										value={String(state.currentOTP)}
+									/>
 								),
 							},
 						}}
 					/>
 					<CustomTextField
-						id="hmac"
-						label="HMAC"
+						id="Next OTP"
+						label="Next OTP"
 						ro={true}
-						value={state.hmac}
+						value={state.nextOTP}
 						props={{
 							InputProps: {
-								endAdornment: <CopyButton value={state.hmac} />,
+								endAdornment: (
+									<CopyButton value={String(state.nextOTP)} />
+								),
 							},
 						}}
 					/>
 				</Stack>
-			</Box>
-		</>
+				<LinearProgress
+					variant="determinate"
+					value={state.progress}
+					color={
+						state.progress <= 15
+							? "error"
+							: state.progress <= 40
+								? "warning"
+								: "success"
+					}
+					sx={{ borderRadius: 1, height: "0.5em" }}
+				/>
+
+				<div style={{ height: "0.5em" }} />
+				<Divider>QR CODE</Divider>
+				<CustomTextField
+					id="account-name"
+					label="Account Name"
+					value={state.accountName}
+					ro={false}
+					onChange={(e) =>
+						dispatch({
+							type: "setAccountName",
+							payload: e.target.value,
+						})
+					}
+				/>
+				<CustomTextField
+					id="issuer"
+					label="Issuer (optional)"
+					value={state.issuer}
+					ro={false}
+					onChange={(e) =>
+						dispatch({
+							type: "setIssuer",
+							payload: e.target.value,
+						})
+					}
+				/>
+				<Collapse in={displayQR}>
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<Paper
+							id="qr-code"
+							alt="QRCode"
+							component="img"
+							src={state.qrCode}
+							sx={{
+								width: "256px",
+								height: "256px",
+							}}
+							elevation={5}
+						/>
+					</Box>
+				</Collapse>
+
+				<div style={{ height: "0.5em" }} />
+				<Divider>ADVANCED</Divider>
+				<CustomTextField
+					id="secret-key-length"
+					label={`Secret Hex (${state.keyLength} bits)`}
+					ro={true}
+					value={state.keyHex}
+					props={{
+						InputProps: {
+							endAdornment: <CopyButton value={state.keyHex} />,
+						},
+					}}
+				/>
+				<CustomTextField
+					id="epoch-time"
+					label="Epoch time"
+					ro={true}
+					value={state.epochTime}
+					props={{
+						InputProps: {
+							endAdornment: (
+								<CopyButton value={String(state.epochTime)} />
+							),
+						},
+					}}
+				/>
+				<CustomTextField
+					id="epoch-iteration"
+					label="Epoch iteration"
+					ro={true}
+					value={state.epochIteration}
+					props={{
+						InputProps: {
+							endAdornment: (
+								<CopyButton value={state.epochIteration} />
+							),
+						},
+					}}
+				/>
+				<CustomTextField
+					id="hmac"
+					label="HMAC"
+					ro={true}
+					value={state.hmac}
+					props={{
+						InputProps: {
+							endAdornment: <CopyButton value={state.hmac} />,
+						},
+					}}
+				/>
+			</Stack>
+		</Box>
 	);
 };
 

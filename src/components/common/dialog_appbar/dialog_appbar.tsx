@@ -18,31 +18,25 @@ const DialogAppbar = ({
 	handleAction: () => void;
 	title: string;
 	actionText: string;
-}) => {
-	return (
-		<AppBar sx={{ position: "sticky" }}>
-			<Toolbar>
-				<IconButton
-					edge="start"
-					color="inherit"
-					onClick={handleClose}
-					aria-label="close"
-				>
-					<CloseIcon />
-				</IconButton>
-				<Typography
-					sx={{ ml: 2, flex: 1 }}
-					variant="h6"
-					component="div"
-				>
-					{title}
-				</Typography>
-				<Button autoFocus color="inherit" onClick={handleAction}>
-					{actionText}
-				</Button>
-			</Toolbar>
-		</AppBar>
-	);
-};
+}) => (
+	<AppBar sx={{ position: "sticky" }}>
+		<Toolbar>
+			<IconButton
+				edge="start"
+				color="inherit"
+				onClick={handleClose}
+				aria-label="close"
+			>
+				<CloseIcon />
+			</IconButton>
+			<Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+				{title}
+			</Typography>
+			<Button autoFocus color="inherit" onClick={handleAction}>
+				{actionText}
+			</Button>
+		</Toolbar>
+	</AppBar>
+);
 
 export default DialogAppbar;

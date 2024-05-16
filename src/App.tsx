@@ -3,7 +3,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import { OTPManager, OTPGenerator } from "@/pages";
 import "@/App.css";
 
-export default function App() {
+const App = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Layout />}>
@@ -13,9 +13,9 @@ export default function App() {
 			</Route>
 		</Routes>
 	);
-}
+};
 
-function NoMatch() {
+const NoMatch = () => {
 	return (
 		<div>
 			<h2>Nothing to see here!</h2>
@@ -24,4 +24,6 @@ function NoMatch() {
 			</p>
 		</div>
 	);
-}
+};
+
+export default App;

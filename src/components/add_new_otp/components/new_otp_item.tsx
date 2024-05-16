@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 // Custom Components
 import { CustomTextField } from "@/components/otp_generator";
 
-export default function NewOTPItem({
+const NewOTPItem = ({
 	otp,
 	index,
 	onChange,
@@ -17,11 +17,9 @@ export default function NewOTPItem({
 	index: number;
 	onChange: (updatedOTP: OTPData) => void;
 	onRemove: () => void;
-}) {
-	const handleFieldChange = (field: keyof OTPData, value: string) => {
-		const updatedOTP = { ...otp, [field]: value };
-		onChange(updatedOTP);
-	};
+}) => {
+	const handleFieldChange = (field: keyof OTPData, value: string) =>
+		onChange({ ...otp, [field]: value });
 
 	return (
 		<Paper
@@ -74,4 +72,6 @@ export default function NewOTPItem({
 			</Stack>
 		</Paper>
 	);
-}
+};
+
+export default NewOTPItem;

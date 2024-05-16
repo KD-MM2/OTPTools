@@ -13,44 +13,41 @@ import { Snackbar } from "@/components/common";
 // Utils
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function BottomBar() {
+const BottomBar = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { pathname } = location;
 
 	return (
-		<>
-			<AppBar
-				position="fixed"
-				sx={{ top: "auto", bottom: 0, userSelect: "none" }}
-			>
-				<Grid container>
-					{BottomBarItems.map((item, index) => (
-						<AnimatedGrid
-							item
-							xs={6}
-							key={index}
-							className={
-								pathname === item.path
-									? "bottom-bar-active"
-									: ""
+		<AppBar
+			position="fixed"
+			sx={{ top: "auto", bottom: 0, userSelect: "none" }}
+		>
+			<Grid container>
+				{BottomBarItems.map((item, index) => (
+					<AnimatedGrid
+						item
+						xs={6}
+						key={index}
+						className={
+							pathname === item.path ? "bottom-bar-active" : ""
+						}
+					>
+						<IconButtonWithText
+							id={item.id}
+							label={item.label}
+							icon={item.icon}
+							onClick={() =>
+								pathname !== item.path && navigate(item.path)
 							}
-						>
-							<IconButtonWithText
-								id={item.id}
-								label={item.label}
-								icon={item.icon}
-								onClick={() =>
-									pathname !== item.path &&
-									navigate(item.path)
-								}
-								onDoubleClick={() => alert("Double Clicked")}
-							/>
-						</AnimatedGrid>
-					))}
-				</Grid>
-				<Snackbar />
-			</AppBar>
-		</>
+							onDoubleClick={() => alert("Double Clicked")}
+						/>
+					</AnimatedGrid>
+				))}
+			</Grid>
+			<Snackbar />
+		</AppBar>
 	);
-}
+};
+
+export default BottomBar;
