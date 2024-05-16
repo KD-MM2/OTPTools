@@ -64,25 +64,25 @@ const Settings = () => {
 					<Divider sx={{ width: page_width }}>
 						Backup / Restore / Sync
 					</Divider>
-					<Stack spacing={2} direction="column" width={page_width}>
-						<PaperBox>
-							<Button>Backup</Button>
-							<Typography>
-								Last backup: YYYY-MM-DD HH:MM:SS X
-							</Typography>
-						</PaperBox>
+					<PaperBox>
+						<Button>Backup</Button>
+						<Typography>
+							Last backup: YYYY-MM-DD HH:MM:SS X
+						</Typography>
+					</PaperBox>
 
-						<PaperBox>
-							<SelectFileButton
-								text="Select backup file"
-								handleFileChange={() => {}}
-								mimeTypes="application/octet-stream"
-							/>
-							<Typography>
-								Last restore: YYYY-MM-DD HH:MM:SS X
-							</Typography>
-						</PaperBox>
-					</Stack>
+					<PaperBox>
+						<SelectFileButton
+							text="Select backup file"
+							handleFileChange={() => {}}
+							mimeTypes="application/octet-stream"
+						/>
+						<Typography>
+							Last restore: YYYY-MM-DD HH:MM:SS X
+						</Typography>
+					</PaperBox>
+
+					
 					<Divider sx={{ width: page_width }}>OTP Generator</Divider>
 					<Divider sx={{ width: page_width }}>OTP Manager</Divider>
 				</Stack>

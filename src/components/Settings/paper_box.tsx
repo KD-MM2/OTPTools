@@ -8,6 +8,7 @@ const PaperBox = ({ children }: { children: React.ReactNode }) => (
 		justifyContent="space-between"
 		alignItems="center"
 		flexDirection="row"
+		width="90%"
 		sx={{
 			p: 3,
 		}}
