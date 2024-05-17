@@ -49,13 +49,13 @@ const NewOTPItem = ({
 					required
 					id={`new-otp-account-name-${index}`}
 					label="Account Name"
-					value={otp.user}
+					value={otp.user ?? ""}
 					onChange={(e) => handleFieldChange("user", e.target.value)}
 				/>
 				<CustomTextField
 					id={`new-otp-issuer-${index}`}
 					label="Issuer (optional)"
-					value={otp.issuer}
+					value={otp.issuer ?? ""}
 					onChange={(e) =>
 						handleFieldChange("issuer", e.target.value)
 					}
@@ -64,7 +64,7 @@ const NewOTPItem = ({
 					required
 					id={`new-otp-secret-${index}`}
 					label="Secret / Seed"
-					value={otp.secret}
+					value={otp.secret ?? ""}
 					onChange={(e) =>
 						handleFieldChange("secret", e.target.value)
 					}

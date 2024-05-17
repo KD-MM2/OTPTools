@@ -12,8 +12,7 @@ import { NewOTPItem, SelectFileButton } from "@/components/add_new_otp";
 // Utils
 import { useState, useRef, useEffect, RefObject, useCallback } from "react";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
-import { BrowserQRCodeReader } from "@zxing/browser";
-import { otpStringParser } from "@/utils/otp";
+import { scrollIntoView, handleAddOTP, processImage } from "@/hooks";
 
 const defaultOTP: OTPData[] = [
 	{
@@ -29,12 +28,10 @@ const AddNewOTP = () => {
 	const [otpList, setOTPList] = useState<OTPData[]>(defaultOTP);
 	const listRef = useRef<HTMLDivElement>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+
 	useEffect(() => {
-		if (listRef.current) {
-			if (document.activeElement?.id.includes("new-otp-")) return;
-			const lastChild = listRef.current.lastChild as HTMLElement;
-			lastChild?.scrollIntoView({ behavior: "smooth" });
-		}
+		if (document.activeElement?.id.includes("new-otp-")) return;
+		scrollIntoView(listRef);
 	}, [otpList]);
 
 	const handleClickOpen = useCallback(() => setOpen(true), []);
@@ -75,50 +72,26 @@ const AddNewOTP = () => {
 		}
 	);
 
-	const handleOTPItemChange = (index: number, updatedOTP: OTPData) => {
-		const updatedOTPList = [...otpList];
-		updatedOTPList[index] = updatedOTP;
-		setOTPList(updatedOTPList);
-	};
+	const handleOTPItemChange = useCallback(
+		(index: number, updatedOTP: OTPData) => {
+			const updatedOTPList = [...otpList];
+			updatedOTPList[index] = updatedOTP;
+			setOTPList(updatedOTPList);
+		},
+		[otpList]
+	);
 
-	const handleAddOTP = () => {
-		const isOTPListValid = otpList.every(
-			(otp) => otp.user !== "" && otp.secret !== ""
-		);
-		if (!isOTPListValid) {
-			emitCustomEvent("SnackBarEvent", {
-				type: "SHOW_SNACKBAR",
-				message: "Please fill all the required fields!",
-				severity: "error",
-			});
-			return;
-		}
-		emitCustomEvent("Operations", {
-			type: "ADD_NEW_OTP",
-			data: otpList.map((otp) => ({
-				...otp,
-				secret: otp.secret.replace(/\s/g, ""),
-			})),
-		});
-	};
-
-	const processImage = useCallback(async (file: File) => {
-		new BrowserQRCodeReader()
-			.decodeFromImageUrl(URL.createObjectURL(file))
-			.then((result) => {
-				const newOTP = otpStringParser(result.getText());
-				if (
-					newOTP.secret === "" ||
-					result.getText() === "" ||
-					result.getText() === null
-				)
-					throw new Error();
-
-				setOTPList((oldList) => {
+	const handleFile = useCallback((file: File) => {
+		if (!file) return;
+		processImage(file)
+			.then((newOTP) => {
+				if (!newOTP) throw new Error();
+				console.log(newOTP);
+				setOTPList((oldList: any) => {
 					const newList = [...oldList, newOTP];
 					const isFirstEntryEmpty =
-						oldList.length === 1 &&
-						(oldList[0].user === "" || oldList[0].secret === "");
+						oldList.length == 1 &&
+						(oldList[0].user == "" || oldList[0].secret == "");
 					return isFirstEntryEmpty ? [newOTP] : newList;
 				});
 			})
@@ -137,38 +110,33 @@ const AddNewOTP = () => {
 	const handleFileChange = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
 			const file = event.target.files?.[0];
-			if (file) {
-				processImage(file);
-			}
+			if (!file) return;
+			handleFile(file);
 		},
-		[processImage]
+		[handleFile]
 	);
 
-	const handlePaste = useCallback(
+	const handlePasteEvent = useCallback(
 		(event: ClipboardEvent) => {
 			const items = event.clipboardData?.items;
 			if (items) {
 				for (const item of items) {
 					if (item.type.indexOf("image") !== -1) {
-						const file = item.getAsFile();
-						if (file) {
-							processImage(file);
-							break;
-						}
+						handleFile(item.getAsFile() as File);
 					}
 				}
 			}
 		},
-		[processImage]
+		[handleFile]
 	);
 
 	useEffect(() => {
 		if (!open) return;
-		document.addEventListener("paste", handlePaste);
+		document.addEventListener("paste", handlePasteEvent);
 		return () => {
-			document.removeEventListener("paste", handlePaste);
+			document.removeEventListener("paste", handlePasteEvent);
 		};
-	}, [handlePaste, open]);
+	}, [handlePasteEvent, open]);
 
 	return (
 		<Dialog
@@ -180,7 +148,7 @@ const AddNewOTP = () => {
 			<DialogAppbar
 				title="ADD OTP"
 				actionText="ADD"
-				handleAction={handleAddOTP}
+				handleAction={() => handleAddOTP(otpList)}
 				handleClose={handleClose}
 			/>
 			<List
