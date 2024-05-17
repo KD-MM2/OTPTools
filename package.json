@@ -26,13 +26,15 @@
     "react": "^18.2.0",
     "react-custom-events": "^1.1.1",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.0"
+    "react-router-dom": "^6.23.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.2",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vite-pwa/assets-generator": "^0.2.4",

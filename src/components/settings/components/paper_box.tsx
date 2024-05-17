@@ -12,6 +12,7 @@ const PaperBox = ({ children }: { children: React.ReactNode }) => (
 		sx={{
 			p: 3,
 		}}
+		elevation={5}
 	>
 		{children}
 	</Box>

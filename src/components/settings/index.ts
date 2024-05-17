@@ -1,6 +1,7 @@
 export {
 	PaperBox,
-	BackupRestoreSync,
+	BackupRestoreSyncSection,
 	OTPGeneratorSection,
 	OTPManagerSection,
+	ChangeID,
 } from "./components";
