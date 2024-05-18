@@ -91,7 +91,7 @@ function generateTOTP({
 	timeStep?: number;
 }) {
 	return generateHOTP({
-		key: key.replace(/\s/g, "").toUpperCase(),
+		key: key.toUpperCase(),
 		counter: Math.floor(now / timeStep),
 	});
 }
@@ -126,7 +126,6 @@ function generateSecret(
 		(acc, num) => acc + base32chars.charAt(num % 32),
 		""
 	);
-	// return key.match(/.{8}/g)?.join(split_delimiter) ?? "";
 	const regex = new RegExp(`.{1,${split_len}}`, "g");
 	return key.match(regex)?.join(split_delimiter) ?? "";
 }

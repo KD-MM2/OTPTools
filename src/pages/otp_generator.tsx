@@ -59,12 +59,12 @@ const OTPGenerator = function () {
 	const UpdateOTP = useCallback(() => {
 		const epoch = Math.round(Date.now() / 1000.0);
 		const _previousOtp = generateTOTP({
-			key: state.secret,
+			key: trimmedSecret,
 			now: epoch - 30,
 		});
-		const _currentOtp = generateTOTP({ key: state.secret, now: epoch });
+		const _currentOtp = generateTOTP({ key: trimmedSecret, now: epoch });
 		const _nextOtp = generateTOTP({
-			key: state.secret,
+			key: trimmedSecret,
 			now: epoch + 30,
 		});
 
@@ -113,13 +113,7 @@ const OTPGenerator = function () {
 			);
 		} else if (state.qrCode !== DummyQR)
 			dispatch({ type: "setQRCode", payload: DummyQR });
-	}, [
-		state.accountName,
-		state.issuer,
-		state.qrCode,
-		state.secret,
-		trimmedSecret,
-	]);
+	}, [state.accountName, state.issuer, state.qrCode, trimmedSecret]);
 
 	useEffect(() => {
 		UpdateOTP();
@@ -131,7 +125,7 @@ const OTPGenerator = function () {
 			dispatch({ type: "setEpochTime", payload: epoch });
 			if (epoch % 30 == 0) UpdateOTP();
 			dispatch({ type: "decrementProgress" });
-		}, 1000);
+		}, 200);
 		return () => {
 			clearInterval(timer);
 		};
@@ -171,7 +165,12 @@ const OTPGenerator = function () {
 				})
 			);
 		});
-	}, [state.accountName, state.issuer, state.secret]);
+	}, [
+		setting.otpgen_key_split_delimiter,
+		state.accountName,
+		state.issuer,
+		state.secret,
+	]);
 
 	return (
 		<Box>

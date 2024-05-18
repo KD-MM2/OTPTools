@@ -79,7 +79,7 @@ function reducer(state: State, action: Action): State {
 		case "setProgress":
 			return { ...state, progress: action.payload };
 		case "decrementProgress": {
-			const newProgress = Math.max(state.progress - 100 / 30, 0);
+			const newProgress = Math.max(state.progress - 100 / 150, 0);
 			return { ...state, progress: newProgress <= 0 ? 100 : newProgress };
 		}
 		default:

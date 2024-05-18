@@ -1,4 +1,3 @@
-// Material UI Components
 import { useCallback, useEffect, useState } from "react";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
 
@@ -7,9 +6,7 @@ import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-// Custom Components
 import { OTPItem } from "@/components";
-// Utils
 import { generateTOTP, getSeeds, setSeeds, copyToClipboard } from "@/utils";
 import { SpeedDial } from "@/views";
 
@@ -50,10 +47,10 @@ const OTPManager = function () {
 			if (epoch % 30 == 0) UpdateOTP();
 
 			setProgress((oldProgress) => {
-				const newProgress = Math.max(oldProgress - 100 / 30, 0);
+				const newProgress = Math.max(oldProgress - 100 / 150, 0);
 				return newProgress <= 0 ? 100 : newProgress;
 			});
-		}, 1000);
+		}, 200);
 		return () => {
 			clearInterval(timer);
 		};

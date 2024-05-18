@@ -6,6 +6,7 @@ type SettingKey =
 	| "otpman_otp_time_step";
 
 interface SettingItem {
+	enabled: boolean;
 	name: string;
 	key: SettingKey;
 	description: string;

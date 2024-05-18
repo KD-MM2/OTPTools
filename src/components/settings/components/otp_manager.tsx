@@ -57,6 +57,7 @@ const OTPManagerSection = ({
 								sx: {
 									width: "40%",
 								},
+								disabled: !item.enabled,
 							}}
 						/>
 					</PaperBox>
