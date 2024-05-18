@@ -14,10 +14,11 @@ import {
 	OTPGeneratorSection,
 	OTPManagerSection,
 } from "@/components";
-import { useSetting } from "@/hooks";
+import { useSetting, useSettingDispatch } from "@/hooks";
 
 const Settings = () => {
 	const setting = useSetting();
+	const dispatch = useSettingDispatch();
 
 	const [open, setOpen] = useState<boolean>(false);
 	const handleClickOpen = useCallback(() => setOpen(true), []);
@@ -49,9 +50,9 @@ const Settings = () => {
 				handleAction={handleSave}
 				handleClose={handleClose}
 			/>
-			<BackupRestoreSyncSection />
-			<OTPGeneratorSection />
-			<OTPManagerSection />
+			<BackupRestoreSyncSection setting={setting} dispatch={dispatch} />
+			<OTPGeneratorSection setting={setting} dispatch={dispatch} />
+			<OTPManagerSection setting={setting} dispatch={dispatch} />
 			<Snackbar />
 		</Dialog>
 	);

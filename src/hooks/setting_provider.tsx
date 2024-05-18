@@ -36,10 +36,13 @@ function reducer(state: SettingState, action: SettingAction): SettingState {
 
 const initialState: SettingState = {
 	otpgen_key_length: 32,
-	otpgen_key_split_length: 4,
+	otpgen_key_split_length: 8,
 	otpgen_key_split_delimiter: " ",
 	otpgen_otp_time_step: 30,
 	otpman_otp_time_step: 30,
+	last_sync: 0,
+	last_backup: 0,
+	last_restore: 0,
 };
 
 const SettingProvider = ({ children }: { children: React.ReactNode }) => {

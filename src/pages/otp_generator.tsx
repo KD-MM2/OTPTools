@@ -34,15 +34,27 @@ const OTPGenerator = function () {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const displayQR = state.accountName.length > 0;
-	const trimmedSecret = state.secret.replace(/\s/g, "");
+	const trimmedSecret = state.secret.replace(
+		new RegExp(`\\${setting.otpgen_key_split_delimiter}`, "g"),
+		""
+	);
 
 	useEffect(() => {
 		if (trimmedSecret.length === 0)
 			dispatch({
 				type: "setSecret",
-				payload: generateSecret(setting.otpgen_key_length),
+				payload: generateSecret(
+					setting.otpgen_key_length,
+					setting.otpgen_key_split_length,
+					setting.otpgen_key_split_delimiter
+				),
 			});
-	}, [setting.otpgen_key_length, trimmedSecret.length]);
+	}, [
+		setting.otpgen_key_length,
+		setting.otpgen_key_split_delimiter,
+		setting.otpgen_key_split_length,
+		trimmedSecret.length,
+	]);
 
 	const UpdateOTP = useCallback(() => {
 		const epoch = Math.round(Date.now() / 1000.0);
@@ -143,7 +155,13 @@ const OTPGenerator = function () {
 					id: oldSeeds.length + 1,
 					user: state.accountName,
 					issuer: state.issuer,
-					secret: state.secret.replace(/\s/g, ""),
+					secret: state.secret.replace(
+						new RegExp(
+							`\\${setting.otpgen_key_split_delimiter}`,
+							"g"
+						),
+						""
+					),
 				},
 			]).then(() =>
 				emitCustomEvent("SnackBarEvent", {
@@ -187,7 +205,11 @@ const OTPGenerator = function () {
 					onClick={() =>
 						dispatch({
 							type: "setSecret",
-							payload: generateSecret(setting.otpgen_key_length),
+							payload: generateSecret(
+								setting.otpgen_key_length,
+								setting.otpgen_key_split_length,
+								setting.otpgen_key_split_delimiter
+							),
 						})
 					}
 				>

@@ -3,13 +3,16 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import { CustomTextField, PaperBox, OTPGen_SettingItems } from "@/components";
-import { useSetting, useSettingDispatch } from "@/hooks";
 
 const width = "90%";
 
-const OTPGeneratorSection = () => {
-	const setting = useSetting();
-	const dispatch = useSettingDispatch();
+const OTPGeneratorSection = ({
+	setting,
+	dispatch,
+}: {
+	setting: SettingState;
+	dispatch: React.Dispatch<SettingAction>;
+}) => {
 	return (
 		<>
 			<Stack

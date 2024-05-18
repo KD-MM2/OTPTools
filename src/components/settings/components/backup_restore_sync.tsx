@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import Button from "@mui/material/Button";
@@ -10,7 +12,13 @@ import { useInstance } from "@/hooks";
 
 const width = "90%";
 
-const BackupRestoreSyncSection = () => {
+const BackupRestoreSyncSection = ({
+	setting,
+	dispatch,
+}: {
+	setting: SettingState;
+	dispatch: React.Dispatch<SettingAction>;
+}) => {
 	const { instanceId, changeInstanceId } = useInstance();
 	const [displayInstanceId, setDisplayInstanceId] = useState<string>("N/A");
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -27,6 +35,13 @@ const BackupRestoreSyncSection = () => {
 			handleClose();
 		}
 	}, [handleClose, instanceId]);
+
+	const handleSetTime = useCallback(
+		(key: string, value: number) => {
+			dispatch({ type: key as any, payload: value });
+		},
+		[dispatch]
+	);
 
 	return (
 		<>
@@ -55,10 +70,15 @@ const BackupRestoreSyncSection = () => {
 					</Stack>
 					<Stack direction="column" textAlign="right">
 						<Typography variant="caption">
-							Last sync YYYY-MM-DD HH:MM:SS X
+							Last sync:{" "}
+							{setting.last_sync > 0
+								? dayjs(setting.last_sync).format(
+										"YYYY-MM-DD HH:mm:ss Z"
+									)
+								: "N/A"}
 						</Typography>
 						<Typography variant="caption">
-							ID {displayInstanceId}
+							ID: {displayInstanceId}
 							<CopyButton value={instanceId} />
 						</Typography>
 					</Stack>
@@ -67,7 +87,12 @@ const BackupRestoreSyncSection = () => {
 				<PaperBox>
 					<Button>Backup</Button>
 					<Typography variant="caption">
-						Last backup YYYY-MM-DD HH:MM:SS X
+						Last backup:{" "}
+						{setting.last_backup > 0
+							? dayjs(setting.last_backup).format(
+									"YYYY-MM-DD HH:mm:ss Z"
+								)
+							: "N/A"}
 					</Typography>
 				</PaperBox>
 
@@ -79,7 +104,12 @@ const BackupRestoreSyncSection = () => {
 						mimeTypes="application/octet-stream"
 					/>
 					<Typography variant="caption">
-						Last restore YYYY-MM-DD HH:MM:SS X
+						Last restore:{" "}
+						{setting.last_restore > 0
+							? dayjs(setting.last_restore).format(
+									"YYYY-MM-DD HH:mm:ss Z"
+								)
+							: "N/A"}
 					</Typography>
 				</PaperBox>
 			</Stack>

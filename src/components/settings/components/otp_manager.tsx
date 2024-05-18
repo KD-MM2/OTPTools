@@ -3,13 +3,16 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import { CustomTextField, PaperBox, OTPMan_SettingItems } from "@/components";
-import { useSetting, useSettingDispatch } from "@/hooks";
 
 const width = "90%";
 
-const OTPManagerSection = () => {
-	const setting = useSetting();
-	const dispatch = useSettingDispatch();
+const OTPManagerSection = ({
+	setting,
+	dispatch,
+}: {
+	setting: SettingState;
+	dispatch: React.Dispatch<SettingAction>;
+}) => {
 	return (
 		<>
 			<Stack

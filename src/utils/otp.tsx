@@ -114,7 +114,11 @@ function verifyTOTP({
 	return verifyHOTP({ token, key, window, counter });
 }
 
-function generateSecret(len: number) {
+function generateSecret(
+	len: number,
+	split_len: number,
+	split_delimiter: string
+) {
 	const base32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 	const randomNumbers = new Uint32Array(len);
 	window.crypto.getRandomValues(randomNumbers);
@@ -122,7 +126,9 @@ function generateSecret(len: number) {
 		(acc, num) => acc + base32chars.charAt(num % 32),
 		""
 	);
-	return key.match(/.{8}/g)?.join(" ") ?? "";
+	// return key.match(/.{8}/g)?.join(split_delimiter) ?? "";
+	const regex = new RegExp(`.{1,${split_len}}`, "g");
+	return key.match(regex)?.join(split_delimiter) ?? "";
 }
 
 const otpStringParser = (data: string) => {
