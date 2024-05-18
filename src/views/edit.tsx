@@ -1,19 +1,20 @@
-// Material UI Components
+import { useState, useEffect, useCallback } from "react";
+import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 
-// Material UI Icons
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-// Custom Components
-import { DialogAppbar, SlideUpTransition, Snackbar } from "@/components/common";
-import { SortableList, ConfirmRemoveDialog } from "@/components/edit";
-
-// Utils
-import { useState, useEffect, useCallback } from "react";
-import { getSeeds, setSeeds } from "@/utils/localforage_handler";
-import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
+import {
+	DialogAppbar,
+	SlideUpTransition,
+	Snackbar,
+	SortableList,
+	ConfirmRemoveDialog,
+} from "@/components";
+import { getSeeds, setSeeds } from "@/utils";
 
 const Edit = () => {
 	const [open, setOpen] = useState<boolean>(false);

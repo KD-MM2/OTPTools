@@ -1,5 +1,5 @@
-import { generateSecret } from "@/utils/otp";
 import DummyQR from "@/assets/qr.svg";
+import { generateSecret } from "@/utils";
 
 export { initialState, reducer };
 

@@ -1,17 +1,19 @@
-// Material UI Components
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-
-// Custom Components
-import { DialogAppbar, SlideUpTransition, Snackbar } from "@/components/common";
-import { NewOTPItem, SelectFileButton } from "@/components/add_new_otp";
-
-// Utils
 import { useState, useRef, useEffect, RefObject, useCallback } from "react";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
+
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import Divider from "@mui/material/Divider";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+
+import {
+	DialogAppbar,
+	SlideUpTransition,
+	Snackbar,
+	NewOTPItem,
+	SelectFileButton,
+} from "@/components";
 import { scrollIntoView, handleAddOTP, processImage } from "@/hooks";
 
 const defaultOTP: OTPData[] = [

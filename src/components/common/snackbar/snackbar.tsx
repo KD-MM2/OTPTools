@@ -1,10 +1,8 @@
-// Material UI Components
+import { useState } from "react";
+import { useCustomEventListener } from "react-custom-events";
+
 import { Snackbar as MuiSnackbar } from "@mui/material";
 import Alert from "@mui/material/Alert";
-
-// Utils
-import { useCustomEventListener } from "react-custom-events";
-import { useState } from "react";
 
 const Snackbar = () => {
 	const [open, setOpen] = useState(false);

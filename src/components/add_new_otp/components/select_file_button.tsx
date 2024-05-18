@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import { RefObject } from "react";
 
 const SelectFileButton = ({
 	fileInputRef,
@@ -7,7 +6,7 @@ const SelectFileButton = ({
 	handleFileChange,
 	mimeTypes,
 }: {
-	fileInputRef: RefObject<HTMLInputElement>;
+	fileInputRef: React.RefObject<HTMLInputElement>;
 	text: string;
 	handleFileChange: (event: any) => void;
 	mimeTypes: string;

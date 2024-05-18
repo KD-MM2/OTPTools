@@ -4,4 +4,6 @@ export {
 	OTPGeneratorSection,
 	OTPManagerSection,
 	ChangeID,
+	OTPGen_SettingItems,
+	OTPMan_SettingItems,
 } from "./components";

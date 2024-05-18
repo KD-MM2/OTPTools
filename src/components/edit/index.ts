@@ -1,1 +1,6 @@
-export { ConfirmRemoveDialog, SortableList } from "./components";
+export {
+	ConfirmRemoveDialog,
+	SortableList,
+	DragHandle,
+	SortableItem,
+} from "./components";

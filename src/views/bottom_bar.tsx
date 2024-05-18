@@ -1,17 +1,14 @@
-// Material UI Components
+import { useNavigate, useLocation } from "react-router-dom";
+
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
 
-// Custom Components
 import {
 	AnimatedGrid,
 	IconButtonWithText,
 	BottomBarItems,
-} from "@/components/bottom_bar";
-import { Snackbar } from "@/components/common";
-
-// Utils
-import { useNavigate, useLocation } from "react-router-dom";
+	Snackbar,
+} from "@/components";
 
 const BottomBar = () => {
 	const navigate = useNavigate();

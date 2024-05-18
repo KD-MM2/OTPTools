@@ -1,20 +1,18 @@
-// Material UI Components
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import styled from "@mui/material/styles/styled";
-
-// Material UI Icons
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-
-// DND Kit & Utils
-import { createContext, useContext, useMemo } from "react";
-import type { CSSProperties, PropsWithChildren } from "react";
 import type {
 	DraggableSyntheticListeners,
 	UniqueIdentifier,
 } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
+import { createContext, useContext, useMemo } from "react";
+import type { CSSProperties, PropsWithChildren } from "react";
+
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import styled from "@mui/material/styles/styled";
+
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 interface Props {
 	id: UniqueIdentifier;

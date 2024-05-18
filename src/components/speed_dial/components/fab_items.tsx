@@ -1,10 +1,8 @@
-// Material UI Icons
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
-import EditIcon from "@mui/icons-material/Edit";
-
-// Utils
 import { emitCustomEvent } from "react-custom-events";
+
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditIcon from "@mui/icons-material/Edit";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const FabItems: FabItem[] = [
 	{

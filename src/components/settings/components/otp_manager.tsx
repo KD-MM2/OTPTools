@@ -1,18 +1,15 @@
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-
-import PaperBox from "./paper_box";
 import Typography from "@mui/material/Typography";
-import { CustomTextField } from "@/components/otp_generator";
-import { useState } from "react";
-import { OTPMan_SettingItems } from "./setting_items";
+
+import { CustomTextField, PaperBox, OTPMan_SettingItems } from "@/components";
+import { useSetting, useSettingDispatch } from "@/hooks";
 
 const width = "90%";
 
 const OTPManagerSection = () => {
-	const [otpmanSettings, setOtpmanSettings] =
-		useState<SettingItem[]>(OTPMan_SettingItems);
+	const setting = useSetting();
+	const dispatch = useSettingDispatch();
 	return (
 		<>
 			<Stack
@@ -27,27 +24,32 @@ const OTPManagerSection = () => {
 				spacing={2}
 			>
 				<Divider sx={{ width: width }}>OTP Manager</Divider>
-				{otpmanSettings.map((setting: SettingItem, index: number) => (
+				{OTPMan_SettingItems.map((item: SettingItem, index: number) => (
 					<PaperBox key={`otpman_setting_pb_${index}`}>
 						<Stack direction="column">
 							<Typography
 								id={`otpman_setting_name_${index}`}
 								variant="caption"
 							>
-								{setting.name}
+								{item.name}
 							</Typography>
 							<Typography
 								id={`otpman_setting_desc_${index}`}
 								variant="caption"
 							>
-								{setting.description}
+								{item.description}
 							</Typography>
 						</Stack>
 						<CustomTextField
 							id={`otpman_setting_val_${index}`}
 							label="VALUE"
-							value={setting.value ?? ""}
-							onChange={(e) => {}}
+							value={setting[item.key] ?? ""}
+							onChange={(e) =>
+								dispatch({
+									type: `set_${item.key}`,
+									payload: e.target.value as number | any,
+								})
+							}
 							props={{
 								sx: {
 									width: "40%",

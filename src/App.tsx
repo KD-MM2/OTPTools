@@ -1,7 +1,8 @@
-import Layout from "@/Layout";
 import { Routes, Route, Link } from "react-router-dom";
-import { OTPManager, OTPGenerator } from "@/pages";
+
 import "@/App.css";
+import Layout from "@/Layout";
+import { OTPManager, OTPGenerator } from "@/pages";
 
 const App = () => {
 	return (

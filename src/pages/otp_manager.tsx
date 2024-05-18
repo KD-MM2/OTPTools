@@ -1,19 +1,17 @@
 // Material UI Components
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
-
-// Custom Components
-import { OTPItem } from "@/components/otp_manager";
-import { SpeedDial } from "@/views";
-
-// Utils
-import { generateTOTP } from "@/utils/otp";
-import { getSeeds, setSeeds } from "@/utils/localforage_handler";
 import { useCallback, useEffect, useState } from "react";
 import { emitCustomEvent, useCustomEventListener } from "react-custom-events";
-import { copyToClipboard } from "@/utils/utils";
+
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
+// Custom Components
+import { OTPItem } from "@/components";
+// Utils
+import { generateTOTP, getSeeds, setSeeds, copyToClipboard } from "@/utils";
+import { SpeedDial } from "@/views";
 
 const OTPManager = function () {
 	const [open, setOpen] = useState(false);

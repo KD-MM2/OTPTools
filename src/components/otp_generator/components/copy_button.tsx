@@ -1,6 +1,8 @@
 import IconButton from "@mui/material/IconButton";
+
 import CopyAllIcon from "@mui/icons-material/CopyAll";
-import { copyToClipboard } from "@/utils/utils";
+
+import { copyToClipboard } from "@/utils";
 
 const CopyButton = ({ value }: { value: string }) => (
 	<IconButton

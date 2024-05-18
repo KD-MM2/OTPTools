@@ -8,7 +8,6 @@ type SettingKey =
 interface SettingItem {
 	name: string;
 	key: SettingKey;
-	value: any;
 	description: string;
 	[key: string]: any;
 }

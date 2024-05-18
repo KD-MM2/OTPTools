@@ -1,9 +1,7 @@
-// Material UI Components
-import Slide from "@mui/material/Slide";
-
-// Utils
-import { TransitionProps } from "@mui/material/transitions/transition";
 import { forwardRef, ReactElement, Ref } from "react";
+
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions/transition";
 
 const Transition = forwardRef(function Transition(
 	props: TransitionProps & {

@@ -1,9 +1,3 @@
-// Material UI Components
-import List from "@mui/material/List";
-
-// React & DnD Kit
-import { Fragment, useMemo, useState } from "react";
-import type { ReactNode } from "react";
 import {
 	defaultDropAnimationSideEffects,
 	DndContext,
@@ -13,13 +7,19 @@ import {
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
+import type { Active, UniqueIdentifier } from "@dnd-kit/core";
 import {
 	SortableContext,
 	arrayMove,
 	sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import type { Active, UniqueIdentifier } from "@dnd-kit/core";
-import { DragHandle, SortableItem } from "./sortable_item";
+
+import { Fragment, useMemo, useState } from "react";
+import type { ReactNode } from "react";
+
+import List from "@mui/material/List";
+
+import { DragHandle, SortableItem } from "@/components";
 
 interface BaseItem {
 	id: UniqueIdentifier;

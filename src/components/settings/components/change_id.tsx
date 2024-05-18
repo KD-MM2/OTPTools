@@ -1,11 +1,13 @@
+import { useCallback, useState } from "react";
+
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { CustomTextField } from "@/components/otp_generator";
-import { useCallback, useState } from "react";
-import Box from "@mui/material/Box";
+
+import { CustomTextField } from "@/components";
 
 const ChangeID = ({
 	open,

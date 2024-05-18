@@ -1,11 +1,9 @@
-// Material UI Components
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 
-// Custom Components
-import { CustomTextField } from "@/components/otp_generator";
+import { CustomTextField } from "@/components";
 
 const NewOTPItem = ({
 	otp,

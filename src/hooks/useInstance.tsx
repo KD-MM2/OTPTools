@@ -1,6 +1,8 @@
-import { generateUUID } from "@/utils/uuid";
 import localForage from "localforage";
+
 import { useEffect, useState } from "react";
+
+import { generateUUID } from "@/utils";
 
 const useInstance = () => {
 	const [instanceId, setInstanceId] = useState<string>("");

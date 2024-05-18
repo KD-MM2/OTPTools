@@ -1,18 +1,12 @@
-// Material UI Components
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import PaperBox from "./paper_box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-// Custom Components
-import { SelectFileButton } from "@/components/add_new_otp";
-import { ChangeID } from "@/components/settings";
-
-// Utils
-import { useCallback, useEffect, useRef, useState } from "react";
+import { SelectFileButton, ChangeID, CopyButton, PaperBox } from "@/components";
 import { useInstance } from "@/hooks";
-import { CopyButton } from "@/components/otp_generator";
 
 const width = "90%";
 
@@ -51,7 +45,9 @@ const BackupRestoreSyncSection = () => {
 				}}
 				spacing={2}
 			>
-				<Divider sx={{ width: width }}>Sync ・ Backup ・ Restore</Divider>
+				<Divider sx={{ width: width }}>
+					Sync ・ Backup ・ Restore
+				</Divider>
 				<PaperBox>
 					<Stack direction="column">
 						<Button>Sync</Button>

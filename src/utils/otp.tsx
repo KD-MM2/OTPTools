@@ -1,17 +1,5 @@
 import CryptoJS from "crypto-js";
 
-export {
-	generateHOTP,
-	hexToBytes,
-	verifyHOTP,
-	generateTOTP,
-	verifyTOTP,
-	generateSecret,
-	base32toHex,
-	getCounterFromTime,
-	otpStringParser,
-};
-
 function hexToBytes(hex: string) {
 	return (hex.match(/.{1,2}/g) ?? []).map((char) =>
 		Number.parseInt(char, 16)
@@ -150,4 +138,16 @@ const otpStringParser = (data: string) => {
 	otpData.issuer = searchParams.get("issuer") ?? "";
 	otpData.secret = searchParams.get("secret") ?? "";
 	return otpData;
+};
+
+export {
+	generateHOTP,
+	hexToBytes,
+	verifyHOTP,
+	generateTOTP,
+	verifyTOTP,
+	generateSecret,
+	base32toHex,
+	getCounterFromTime,
+	otpStringParser,
 };

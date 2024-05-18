@@ -1,13 +1,12 @@
 import localForage from "localforage";
+
 import {
 	generateKey,
 	encryptKey,
 	decryptKey,
 	encryptData,
 	decryptData,
-} from "@/utils/aes";
-
-export { getSeeds, setSeeds };
+} from "@/utils";
 
 localForage.config({
 	driver: localForage.INDEXEDDB,
@@ -37,3 +36,5 @@ async function setSeeds(seeds: OTPData[]) {
 	const data = encryptData(JSON.stringify(seeds), await getKey());
 	return localForage.setItem("seeds", data);
 }
+
+export { getSeeds, setSeeds };

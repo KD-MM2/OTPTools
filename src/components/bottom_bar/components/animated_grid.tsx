@@ -1,6 +1,5 @@
-// Material UI Components
-import styled from "@mui/material/styles/styled";
 import Grid from "@mui/material/Grid";
+import styled from "@mui/material/styles/styled";
 
 const AnimatedGrid = styled(Grid)(({ theme }) => ({
 	transition: theme.transitions.create("background-color", {

@@ -1,12 +1,10 @@
-// Material UI Components
-import Box from "@mui/material/Box";
 import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
 import { default as MuiSpeedDial } from "@mui/material/SpeedDial";
+import SpeedDialAction from "@mui/material/SpeedDialAction";
 
-// Custom Components
-import { FabItems } from "@/components/speed_dial";
+import { FabItems } from "@/components";
 import { Edit, AddNewOTP, Settings } from "@/views";
 
 const SpeedDial = ({ open, setOpen, progress }: SpeedDialProps) => {

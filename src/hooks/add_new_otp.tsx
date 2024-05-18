@@ -1,4 +1,4 @@
-import { otpStringParser } from "@/utils/otp";
+import { otpStringParser } from "@/utils";
 import { BrowserQRCodeReader } from "@zxing/browser/esm/readers/BrowserQRCodeReader";
 import { emitCustomEvent } from "react-custom-events";
 

@@ -1,33 +1,32 @@
-// Material UI Components
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import LinearProgress from "@mui/material/LinearProgress";
-import Collapse from "@mui/material/Collapse";
-import Paper from "@mui/material/Paper";
+import QRCode from "qrcode";
 
-// Material UI Icons
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
-
-// Custom Components
-import { CustomTextField, CopyButton } from "@/components/otp_generator";
-
-// Utils
 import { useCallback, useEffect, useReducer } from "react";
-import { initialState, reducer } from "@/utils/otp_generator_context";
+import { emitCustomEvent } from "react-custom-events";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
+import LinearProgress from "@mui/material/LinearProgress";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
+import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
+
+import DummyQR from "@/assets/qr.svg";
+import { CustomTextField, CopyButton } from "@/components";
 import {
+	otpgenInitialState as initialState,
+	otpgenReducer as reducer,
 	base32toHex,
 	generateTOTP,
 	generateSecret,
 	getCounterFromTime,
-} from "@/utils/otp";
-import QRCode from "qrcode";
-import { emitCustomEvent } from "react-custom-events";
-import { getSeeds, setSeeds } from "@/utils/localforage_handler";
-import DummyQR from "@/assets/qr.svg";
+	getSeeds,
+	setSeeds,
+} from "@/utils";
 
 const OTPGenerator = function () {
 	const [state, dispatch] = useReducer(reducer, initialState);

@@ -1,7 +1,5 @@
 import CryptoJS from "crypto-js";
 
-export { generateKey, encryptKey, decryptKey, encryptData, decryptData };
-
 function generateKey(len: number = 24) {
 	return CryptoJS.lib.WordArray.random(len);
 }
@@ -22,3 +20,5 @@ function encryptData(data: string, key: string) {
 function decryptData(data: string, key: string) {
 	return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
 }
+
+export { generateKey, encryptKey, decryptKey, encryptData, decryptData };
