@@ -1,5 +1,4 @@
 import DummyQR from "@/assets/qr.svg";
-import { generateSecret } from "@/utils";
 
 export { initialState, reducer };
 
@@ -36,7 +35,7 @@ type Action =
 	| { type: "decrementProgress" };
 
 const initialState: State = {
-	secret: generateSecret(),
+	secret: "",
 	epochTime: 0,
 	epochIteration: "",
 	hmac: "",
@@ -44,7 +43,7 @@ const initialState: State = {
 	currentOTP: "",
 	nextOTP: "",
 	keyHex: "",
-	keyLength: 160,
+	keyLength: 0,
 	accountName: "",
 	issuer: "",
 	qrCode: DummyQR,

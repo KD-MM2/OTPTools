@@ -1,4 +1,5 @@
 type SettingAction =
+	| { type: "set_settings"; payload: SettingState }
 	| { type: "set_otpgen_key_length"; payload: number }
 	| { type: "set_otpgen_key_split_length"; payload: number }
 	| { type: "set_otpgen_key_split_delimiter"; payload: string }

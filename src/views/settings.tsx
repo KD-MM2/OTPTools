@@ -1,13 +1,10 @@
 // Utils
-import { useState, useEffect, useCallback } from "react";
+import localForage from "localforage";
+
+import { useState, useCallback } from "react";
 import { useCustomEventListener } from "react-custom-events";
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import Divider from "@mui/material/Divider";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
 
 import {
 	DialogAppbar,
@@ -17,13 +14,18 @@ import {
 	OTPGeneratorSection,
 	OTPManagerSection,
 } from "@/components";
-
-const page_width = "90%";
+import { useSetting } from "@/hooks";
 
 const Settings = () => {
+	const setting = useSetting();
+
 	const [open, setOpen] = useState<boolean>(false);
 	const handleClickOpen = useCallback(() => setOpen(true), []);
 	const handleClose = useCallback(() => setOpen(false), []);
+	const handleSave = useCallback(() => {
+		localForage.setItem("settings", JSON.stringify(setting));
+		handleClose();
+	}, [handleClose, setting]);
 
 	useCustomEventListener("OpenDialog", (data: string) => {
 		switch (data) {
@@ -44,7 +46,7 @@ const Settings = () => {
 			<DialogAppbar
 				title="SETTINGS"
 				actionText="SAVE"
-				handleAction={() => {}}
+				handleAction={handleSave}
 				handleClose={handleClose}
 			/>
 			<BackupRestoreSyncSection />

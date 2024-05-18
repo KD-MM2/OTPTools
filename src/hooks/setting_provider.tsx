@@ -1,4 +1,6 @@
-import { createContext, useReducer } from "react";
+import localForage from "localforage";
+
+import { createContext, useEffect, useReducer } from "react";
 
 const SettingDispatchContext = createContext<React.Dispatch<SettingAction>>(
 	() => undefined
@@ -7,6 +9,11 @@ const SettingContext = createContext<SettingState>({} as SettingState);
 
 function reducer(state: SettingState, action: SettingAction): SettingState {
 	switch (action.type) {
+		case "set_settings":
+			return {
+				...action.payload,
+			};
+
 		case "set_otpgen_key_length":
 			return { ...state, otpgen_key_length: action.payload };
 
@@ -36,7 +43,23 @@ const initialState: SettingState = {
 };
 
 const SettingProvider = ({ children }: { children: React.ReactNode }) => {
-	const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer(reducer, {} as SettingState);
+
+	useEffect(() => {
+		localForage
+			.getItem("settings")
+			.then((value) => {
+				if (!value) throw new Error();
+				return JSON.parse(value as string) as SettingState;
+			})
+			.catch(() => {
+				localForage.setItem("settings", JSON.stringify(initialState));
+				return initialState;
+			})
+			.then((settings) => {
+				dispatch({ type: "set_settings", payload: settings });
+			});
+	}, []);
 
 	return (
 		<SettingContext.Provider value={state}>

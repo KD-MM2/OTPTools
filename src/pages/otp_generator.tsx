@@ -17,6 +17,7 @@ import VpnKeyIcon from "@mui/icons-material/VpnKey";
 
 import DummyQR from "@/assets/qr.svg";
 import { CustomTextField, CopyButton } from "@/components";
+import { useSetting } from "@/hooks";
 import {
 	otpgenInitialState as initialState,
 	otpgenReducer as reducer,
@@ -29,10 +30,19 @@ import {
 } from "@/utils";
 
 const OTPGenerator = function () {
+	const setting = useSetting();
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const displayQR = state.accountName.length > 0;
 	const trimmedSecret = state.secret.replace(/\s/g, "");
+
+	useEffect(() => {
+		if (trimmedSecret.length === 0)
+			dispatch({
+				type: "setSecret",
+				payload: generateSecret(setting.otpgen_key_length),
+			});
+	}, [setting.otpgen_key_length, trimmedSecret.length]);
 
 	const UpdateOTP = useCallback(() => {
 		const epoch = Math.round(Date.now() / 1000.0);
@@ -115,7 +125,7 @@ const OTPGenerator = function () {
 		};
 	}, [UpdateOTP]);
 
-	const handleAddToOTPList = () => {
+	const handleAddToOTPList = useCallback(() => {
 		if (state.accountName.length === 0) {
 			emitCustomEvent("SnackBarEvent", {
 				type: "SHOW_SNACKBAR",
@@ -143,7 +153,7 @@ const OTPGenerator = function () {
 				})
 			);
 		});
-	};
+	}, [state.accountName, state.issuer, state.secret]);
 
 	return (
 		<Box>
@@ -177,7 +187,7 @@ const OTPGenerator = function () {
 					onClick={() =>
 						dispatch({
 							type: "setSecret",
-							payload: generateSecret(),
+							payload: generateSecret(setting.otpgen_key_length),
 						})
 					}
 				>

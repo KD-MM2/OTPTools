@@ -114,9 +114,9 @@ function verifyTOTP({
 	return verifyHOTP({ token, key, window, counter });
 }
 
-function generateSecret() {
+function generateSecret(len: number) {
 	const base32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-	const randomNumbers = new Uint32Array(32);
+	const randomNumbers = new Uint32Array(len);
 	window.crypto.getRandomValues(randomNumbers);
 	const key = randomNumbers.reduce(
 		(acc, num) => acc + base32chars.charAt(num % 32),
