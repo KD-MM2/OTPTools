@@ -34,10 +34,13 @@ const OTPGenerator = function () {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const displayQR = state.accountName.length > 0;
-	const trimmedSecret = state.secret.replace(
-		new RegExp(`\\${setting.otpgen_key_split_delimiter}`, "g"),
-		""
-	);
+	const trimmedSecret =
+		setting.otpgen_key_split_delimiter != ""
+			? state.secret.replace(
+					new RegExp(`\\${setting.otpgen_key_split_delimiter}`, "g"),
+					""
+				)
+			: state.secret;
 
 	useEffect(() => {
 		if (trimmedSecret.length === 0)

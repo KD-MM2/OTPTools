@@ -9,13 +9,7 @@ import Typography from "@mui/material/Typography";
 
 import { SelectFileButton, ChangeID, CopyButton, PaperBox } from "@/components";
 import { useInstance } from "@/hooks";
-import {
-	getAllItems,
-	base64Encode,
-	clearAllItems,
-	addAllItems,
-	downloadFile,
-} from "@/utils";
+import { getAllItems, clearAllItems, addAllItems, downloadFile } from "@/utils";
 
 const width = "90%";
 
