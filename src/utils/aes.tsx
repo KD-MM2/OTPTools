@@ -21,4 +21,20 @@ function decryptData(data: string, key: string) {
 	return CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
 }
 
-export { generateKey, encryptKey, decryptKey, encryptData, decryptData };
+function base64Encode(data: string) {
+	return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(data));
+}
+
+function base64Decode(data: string) {
+	return CryptoJS.enc.Utf8.stringify(CryptoJS.enc.Base64.parse(data));
+}
+
+export {
+	generateKey,
+	encryptKey,
+	decryptKey,
+	encryptData,
+	decryptData,
+	base64Encode,
+	base64Decode,
+};

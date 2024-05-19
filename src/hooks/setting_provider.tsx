@@ -1,6 +1,6 @@
-import localForage from "localforage";
-
 import { createContext, useEffect, useReducer } from "react";
+
+import { getSetting, saveSetting } from "@/utils";
 
 const SettingDispatchContext = createContext<React.Dispatch<SettingAction>>(
 	() => undefined
@@ -8,30 +8,46 @@ const SettingDispatchContext = createContext<React.Dispatch<SettingAction>>(
 const SettingContext = createContext<SettingState>({} as SettingState);
 
 function reducer(state: SettingState, action: SettingAction): SettingState {
+	let newState: SettingState = state;
 	switch (action.type) {
 		case "set_settings":
-			return {
-				...action.payload,
-			};
+			newState = action.payload;
+			break;
 
 		case "set_otpgen_key_length":
-			return { ...state, otpgen_key_length: action.payload };
+			newState = { ...state, otpgen_key_length: action.payload };
+			break;
 
 		case "set_otpgen_key_split_length":
-			return { ...state, otpgen_key_split_length: action.payload };
+			newState = { ...state, otpgen_key_split_length: action.payload };
+			break;
 
 		case "set_otpgen_key_split_delimiter":
-			return { ...state, otpgen_key_split_delimiter: action.payload };
+			newState = { ...state, otpgen_key_split_delimiter: action.payload };
+			break;
 
 		case "set_otpgen_otp_time_step":
-			return { ...state, otpgen_otp_time_step: action.payload };
+			newState = { ...state, otpgen_otp_time_step: action.payload };
+			break;
 
 		case "set_otpman_otp_time_step":
-			return { ...state, otpman_otp_time_step: action.payload };
+			newState = { ...state, otpman_otp_time_step: action.payload };
+			break;
 
-		default:
-			return state;
+		case "set_last_sync":
+			newState = { ...state, last_sync: action.payload };
+			break;
+
+		case "set_last_backup":
+			newState = { ...state, last_backup: action.payload };
+			break;
+
+		case "set_last_restore":
+			newState = { ...state, last_restore: action.payload };
+			break;
 	}
+	saveSetting(newState);
+	return newState;
 }
 
 const initialState: SettingState = {
@@ -49,14 +65,13 @@ const SettingProvider = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(reducer, {} as SettingState);
 
 	useEffect(() => {
-		localForage
-			.getItem("settings")
+		getSetting()
 			.then((value) => {
 				if (!value) throw new Error();
 				return JSON.parse(value as string) as SettingState;
 			})
 			.catch(() => {
-				localForage.setItem("settings", JSON.stringify(initialState));
+				saveSetting(initialState);
 				return initialState;
 			})
 			.then((settings) => {

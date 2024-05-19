@@ -1,6 +1,3 @@
-// Utils
-import localForage from "localforage";
-
 import { useState, useCallback } from "react";
 import { useCustomEventListener } from "react-custom-events";
 
@@ -15,6 +12,7 @@ import {
 	OTPManagerSection,
 } from "@/components";
 import { useSetting, useSettingDispatch } from "@/hooks";
+import { saveSetting } from "@/utils";
 
 const Settings = () => {
 	const setting = useSetting();
@@ -24,7 +22,7 @@ const Settings = () => {
 	const handleClickOpen = useCallback(() => setOpen(true), []);
 	const handleClose = useCallback(() => setOpen(false), []);
 	const handleSave = useCallback(() => {
-		localForage.setItem("settings", JSON.stringify(setting));
+		saveSetting(setting);
 		handleClose();
 	}, [handleClose, setting]);
 

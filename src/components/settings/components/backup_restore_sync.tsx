@@ -9,6 +9,13 @@ import Typography from "@mui/material/Typography";
 
 import { SelectFileButton, ChangeID, CopyButton, PaperBox } from "@/components";
 import { useInstance } from "@/hooks";
+import {
+	getAllItems,
+	base64Encode,
+	clearAllItems,
+	addAllItems,
+	downloadFile,
+} from "@/utils";
 
 const width = "90%";
 
@@ -36,9 +43,39 @@ const BackupRestoreSyncSection = ({
 		}
 	}, [handleClose, instanceId]);
 
-	const handleSetTime = useCallback(
-		(key: string, value: number) => {
-			dispatch({ type: key as any, payload: value });
+	const handleBackup = useCallback(() => {
+		const time = dayjs().unix();
+		dispatch({ type: "set_last_backup", payload: time });
+
+		getAllItems().then((items) => {
+			downloadFile(
+				JSON.stringify(items),
+				`backup_${dayjs.unix(time).format("YYYYMMDD-HHmmss")}.json`,
+				"application/json"
+			);
+		});
+	}, [dispatch]);
+
+	const handleRestore = useCallback(
+		(event: React.ChangeEvent<HTMLInputElement>) => {
+			const file = event.target.files?.[0];
+			if (!file) return;
+
+			const fileReader = new FileReader();
+			fileReader.onload = () => {
+				const fileContent = fileReader.result as string;
+				const items = JSON.parse(fileContent);
+
+				clearAllItems().then(() => {
+					addAllItems(items).then(() => {
+						dispatch({
+							type: "set_last_restore",
+							payload: dayjs().unix(),
+						});
+					});
+				});
+			};
+			fileReader.readAsText(file);
 		},
 		[dispatch]
 	);
@@ -72,9 +109,9 @@ const BackupRestoreSyncSection = ({
 						<Typography variant="caption">
 							Last sync:{" "}
 							{setting.last_sync > 0
-								? dayjs(setting.last_sync).format(
-										"YYYY-MM-DD HH:mm:ss Z"
-									)
+								? dayjs
+										.unix(setting.last_sync)
+										.format("YYYY-MM-DD HH:mm:ss Z")
 								: "N/A"}
 						</Typography>
 						<Typography variant="caption">
@@ -85,13 +122,13 @@ const BackupRestoreSyncSection = ({
 				</PaperBox>
 
 				<PaperBox>
-					<Button>Backup</Button>
+					<Button onClick={handleBackup}>Backup</Button>
 					<Typography variant="caption">
 						Last backup:{" "}
 						{setting.last_backup > 0
-							? dayjs(setting.last_backup).format(
-									"YYYY-MM-DD HH:mm:ss Z"
-								)
+							? dayjs
+									.unix(setting.last_backup)
+									.format("YYYY-MM-DD HH:mm:ss Z")
 							: "N/A"}
 					</Typography>
 				</PaperBox>
@@ -100,15 +137,15 @@ const BackupRestoreSyncSection = ({
 					<SelectFileButton
 						fileInputRef={fileInputRef}
 						text="Select file to restore"
-						handleFileChange={() => {}}
-						mimeTypes="application/octet-stream"
+						handleFileChange={handleRestore}
+						mimeTypes="application/json"
 					/>
 					<Typography variant="caption">
 						Last restore:{" "}
 						{setting.last_restore > 0
-							? dayjs(setting.last_restore).format(
-									"YYYY-MM-DD HH:mm:ss Z"
-								)
+							? dayjs
+									.unix(setting.last_restore)
+									.format("YYYY-MM-DD HH:mm:ss Z")
 							: "N/A"}
 					</Typography>
 				</PaperBox>

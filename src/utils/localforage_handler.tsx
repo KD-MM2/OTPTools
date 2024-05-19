@@ -37,4 +37,38 @@ async function setSeeds(seeds: OTPData[]) {
 	return localForage.setItem("seeds", data);
 }
 
-export { getSeeds, setSeeds };
+async function getAllItems() {
+	const items: any[] = [];
+	await localForage.iterate((value, key) => {
+		items.push({ key, value });
+	});
+	return items;
+}
+
+async function clearAllItems() {
+	await localForage.clear();
+}
+
+async function addAllItems(items: any[]) {
+	for (const item of items) {
+		await localForage.setItem(item.key, item.value);
+	}
+}
+
+async function saveSetting(value: any) {
+	await localForage.setItem("settings", JSON.stringify(value));
+}
+
+async function getSetting() {
+	return localForage.getItem("settings");
+}
+
+export {
+	getSeeds,
+	setSeeds,
+	getAllItems,
+	clearAllItems,
+	addAllItems,
+	saveSetting,
+	getSetting,
+};
